@@ -1,0 +1,8 @@
+Stuff to code
+   - Brick Detection
+   - Brick Classification
+       - Colour
+       - Brick type
+   - Brick-set management
+   - Control system
+   - Brick-set downloader (Maybe)

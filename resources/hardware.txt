@@ -1,0 +1,13 @@
+Required Hardware
+
+Primary:
+    - Frame for camera and raspberry PI
+    - Belt for conveyor belt
+
+Next:
+    - Conveyor belt axles
+    - Motors
+    - Push arm
+
+Final:
+    - Wireless or ethernet hardware
