@@ -16,3 +16,6 @@ Raspberry PI:
 Build Systems:
 	CMake:
 		https://cmake.org/
+
+Handling Image Numbers:
+		http://homepages.inf.ed.ac.uk/rbf/BOOKS/PHILLIPS/cips2ed.pdf
