@@ -10,3 +10,5 @@ file (GLOB sources
 # in the current directory
 add_library(block-detector ${sources} requirements.txt)
 
+target_include_directories(block-detector PRIVATE ${OPENCV_INCLUDE_DIRS})
+target_link_libraries(block-detector ${OPENCV_LIBRARIES})
