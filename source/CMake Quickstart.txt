@@ -1,0 +1,11 @@
+To quickly get set up, go to a directory outside of this 
+git repo and run
+
+cmake /path/to/repo/source/folder -G <generator>
+
+Where <generator> will usually be "Visual Studio 15 Win64"
+on Windows and should probably be "Xcode" on Mac. (Note:
+The quotes are needed in "Visual Studio 15 Win64" since
+there are spaces in the parameter.) If these don't work
+cmake will print out a list of possible generators that
+can be used.
