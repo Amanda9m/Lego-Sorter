@@ -4,5 +4,4 @@ OpenCV:
 		
 Raspberry PI:
 	Unattended Installation:
-		http://www.instructables.com/id/Raspbian-Pi-Customized-Unattended-Installation/
-		
+		https://github.com/FooDeas/raspberrypi-ua-netinst
