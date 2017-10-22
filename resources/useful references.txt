@@ -11,7 +11,11 @@ Raspberry PI:
 		https://www.raspberrypi.org/documentation/usage/camera/raspicam/raspistill.md
 		https://www.raspberrypi.org/documentation/hardware/camera/README.md
 		https://github.com/raspberrypi/userland/blob/master/host_applications/linux/apps/raspicam/RaspiStill.c
+		https://thepihut.com/blogs/raspberry-pi-tutorials/16021420-how-to-install-use-the-raspberry-pi-camera
 		
 Build Systems:
 	CMake:
 		https://cmake.org/
+
+Handling Image Numbers:
+		http://homepages.inf.ed.ac.uk/rbf/BOOKS/PHILLIPS/cips2ed.pdf
