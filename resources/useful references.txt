@@ -5,3 +5,7 @@ OpenCV:
 Raspberry PI:
 	Unattended Installation:
 		https://github.com/FooDeas/raspberrypi-ua-netinst
+		
+Build Systems:
+	CMake:
+		https://cmake.org/
