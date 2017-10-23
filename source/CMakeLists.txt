@@ -13,3 +13,6 @@ find_package(OpenCV REQUIRED)
 add_subdirectory(block-identifier)
 add_subdirectory(block-detector)
 add_subdirectory(colour-detector)
+
+# Add the headers so that they can be edited more easily
+add_subdirectory(include)
