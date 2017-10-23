@@ -41,9 +41,9 @@ colour find_nearest_colour(colour guess)
 
 	for (size_t i = 1; i < lego_colours_size; ++i)
 	{
-		const int32_t dist_r = (int32_t)lego_colours[i].r - guess.r;
-		const int32_t dist_g = (int32_t)lego_colours[i].g - guess.g;
-		const int32_t dist_b = (int32_t)lego_colours[i].b - guess.b;
+		const int32_t dist_r = (int32_t)lego_colours[i].rgb.r - guess.r;
+		const int32_t dist_g = (int32_t)lego_colours[i].rgb.g - guess.g;
+		const int32_t dist_b = (int32_t)lego_colours[i].rgb.b - guess.b;
 
 		const int32_t result = dist_r * dist_r + 
 			dist_g * dist_g + dist_b * dist_b;
@@ -55,7 +55,7 @@ colour find_nearest_colour(colour guess)
 		}
 	}
 
-	return lego_colours[min_idx];
+	return lego_colours[min_idx].rgb;
 #undef lego_colours_size
 }
 
@@ -74,7 +74,7 @@ colour detect_colour(image source, image block_mask) {
 	assert(block_mask.channels == 1);
 
 	uint32_t r = 0, g = 0, b = 0;
-	size_t count = 0;
+	uint32_t count = 0;
 	const size_t size = source.height * source.width;
 	
 
