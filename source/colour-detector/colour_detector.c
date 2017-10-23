@@ -24,6 +24,8 @@
 */
 #define edge_threshold 128
 
+// Source: http://www.bartneck.de/2016/09/09/the-curious-case-of-lego-colors/
+
 colour detect_colour(image source, image block_mask) {
 	// source and block_mask must have the same sizes
 	assert(source.width == block_mask.width);
