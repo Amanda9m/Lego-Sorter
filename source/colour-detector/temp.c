@@ -24,6 +24,12 @@ colour detect_colour(image source, image block_mask) {
 	b = b / count;
 
 	colour block = { r, g, b };
+	colour known = { 0, 0, 0 };
 
-	return block;
+	/*Comparison to known LEGO RGB values to be added.
+	  Closest value will be stored in known.*/
+
+	return known;
+
+	/**/
 }
