@@ -8,7 +8,6 @@ struct lego_colour
 {
 	uint16_t lego_id;
 	const char* colour_name;
-	uint8_t c, m, y, k;
 	colour rgb;
 	const char* pantone;
 };
