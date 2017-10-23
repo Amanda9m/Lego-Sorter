@@ -9,3 +9,5 @@ file(GLOB sources
 
 # This creates a library project using the sources files
 add_library(colour-detector ${sources} requirements.txt)
+
+target_include_directories(block-detector PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../include")

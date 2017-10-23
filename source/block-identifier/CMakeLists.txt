@@ -9,3 +9,5 @@ file(GLOB sources
 
 # Create a static library using the sources
 add_library(block-identifier ${sources} requirements.txt)
+
+target_include_directories(block-detector PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../include")
