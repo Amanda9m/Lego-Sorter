@@ -13,11 +13,14 @@ extern "C" {
 #include <cstdlib>
 #include <cstring>
 
+// Accesses a pixel element at (x, y) and gives the channel component
+#define img_pixel_at(src, x, y, channel) ((src).img[y * (src).width * (src).channels + x * (src).channels + channel])
+
 
 #define edge_threshold 128
 #define num_edge_threshhold 400;
 
-is_block(image source)
+bool is_block(image source, image* block_mask)
 {
     int is_block = 0;
     source = sobel_filter(source);
