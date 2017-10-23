@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.0)
 project(lego-sorter)
 
 # Find all dependency packages
-find_package(opencv REQUIRED)
+find_package(OpenCV REQUIRED)
 
 # Add all the sub projects to the main project
 add_subdirectory(block-identifier)

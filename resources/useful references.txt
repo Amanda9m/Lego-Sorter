@@ -1,6 +1,8 @@
 OpenCV:
 	Edge Detection:
 		https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/canny_detector/canny_detector.html
+		possible c code / algorithms for canny edge detection:
+		http://www.math.tau.ac.il/~turkel/notes/canny_source.c
 	ML Introduction:
 		https://docs.opencv.org/3.1.0/dc/dd6/ml_intro.html
 		
