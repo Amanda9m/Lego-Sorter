@@ -74,7 +74,7 @@ colour detect_colour(image source, image block_mask) {
 	assert(block_mask.channels == 1);
 
 	uint32_t r = 0, g = 0, b = 0;
-	size_t count = 0;
+	uint32_t count = 0;
 	const size_t size = source.height * source.width;
 	
 
