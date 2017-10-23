@@ -56,7 +56,7 @@ colour detect_colour(image source, image block_mask) {
 	g /= count;
 	b /= count;
 
-	colour block = { r, g, b };
+	colour block = { (uint8_t)r, (uint8_t)g, (uint8_t)b };
 	colour known = { 0, 0, 0 };
 
 	// TODO
