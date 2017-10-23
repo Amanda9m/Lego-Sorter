@@ -22,8 +22,15 @@ extern "C" sobel_filter_error_code sobel_filter(
 	image source,
 	image* output)
 {
+	// Make sure that the source image is a grayscale image
 	assert(source.channels == 1);
-	assert(!!output);
+	// Make sure that the output image is not NULL
+	assert(output != NULL);
+
+	// Ensure that the source image is valid
+	assert(source.img != NULL);
+	// Ensure that the source image has a size greater than 0
+	assert(source.height != 0 && source.width != 0);
 
 	try {
 		// Create an OpenCV matrix holding the image

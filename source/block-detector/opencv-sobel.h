@@ -16,7 +16,8 @@ enum sobel_filter_error_code
    Preconditions:
       - source is a greyscale image { channels == 1 }
 	  - output is not null { !!output }
-	  - output is not a valid image
+	  - source is a valid image { source.img != NULL }
+	  - source is not an empty image { source.height != 0 && source.width != 0 }
 
    Postconditions:
 	  - output is overwritten with a new image if the
