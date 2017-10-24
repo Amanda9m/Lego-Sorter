@@ -55,7 +55,7 @@ bool is_block(image source, image* block_mask)
 }
 
 // Method stub for block_in_image
-bool block_in_image(image source, image* output)
+bool block_in_image(image source, image* block_mask)
 {
 	// It doesn't really make sense to check if there is 
 	// a block in an empty image. Just returning false 

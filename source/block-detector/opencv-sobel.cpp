@@ -46,23 +46,34 @@ extern "C" sobel_filter_error_code sobel_filter(
 		cv::Sobel(src, grad_x, CV_16SC1, 1, 0);
 		cv::Sobel(src, grad_y, CV_16SC1, 0, 1);
 
+		// Convert signed images (range -1 to 1) to an 
+		// unsigned image (range 0 to 1)
 		cv::convertScaleAbs(grad_x, abs_grad_x);
 		cv::convertScaleAbs(grad_y, abs_grad_y);
 
+		// Combine both images into one image
 		cv::addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0, grad);
 
 		output->width = source.width;
 		output->height = source.height;
 		output->channels = 1;
 
+		// Convert to grayscale 8-bit image
 		grad.assignTo(out, CV_8UC1);
 
+		// Copy image to output image
 		output->img = (uint8_t*)malloc(
 			source.width * source.height * sizeof(uint8_t));
 
+		// If malloc failed then indicate that memory
+		// allocation failed to the caller.
 		if (!output->img)
 			return SOBEL_FILTER_OUT_OF_MEMORY;
 
+		// If the image isn't one continuous block of 
+		// memory then the following memcpy won't work
+		// and will definitely read some uninitialized
+		// memory that we don't want it to read.
 		assert(out.isContinuous());
 
 		std::memcpy(output->img, out.data,
