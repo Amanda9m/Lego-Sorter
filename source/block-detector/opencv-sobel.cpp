@@ -70,6 +70,16 @@ extern "C" sobel_filter_error_code sobel_filter(
 	} 
 	catch (...)
 	{
+		// If there was an error cleanup to ensure as few 
+		// memory leaks as possible.
+		free(output->img);
+		
+		/* If any C++ code throws an unexpected exception
+		   catch it and indicate that there was an error
+		   by returning -1. If a C++ exception propagates
+		   up into C code then the program will crash
+		   with no information given.
+		*/
 		return SOBEL_FILTER_INTERNAL_ERROR;
 	}
 	return SOBEL_FILTER_SUCCESS;
