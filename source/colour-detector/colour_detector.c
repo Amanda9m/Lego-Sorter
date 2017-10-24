@@ -24,7 +24,7 @@
    changed later to better suit what should be considered
    the lego block.
 */
-#define edge_threshold 128
+#define edge_threshold 127
 
 colour find_nearest_colour(colour guess)
 {
@@ -79,7 +79,7 @@ colour detect_colour(image source, image block_mask) {
 	
 
 	for (size_t j = 0; j < size; j++) {
-		if (img_pixel(block_mask, j, 0) > edge_threshold) {
+		if (img_pixel(block_mask, j, 0) < edge_threshold) {
 			r += img_pixel(source, j, 0);
 			g += img_pixel(source, j, 1);
 			b += img_pixel(source, j, 2);
@@ -99,6 +99,11 @@ colour detect_colour(image source, image block_mask) {
 
 	// find closest lego colour based on directed line segment norms
 	colour known = find_nearest_colour(block);
+
+	/*To access naming information regarding colour:
+	  struct lego_colour known = find_nearest_colour(block);
+	  return known;
+	*/
 
 	return known;
 
