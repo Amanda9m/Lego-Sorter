@@ -69,6 +69,17 @@ bool block_in_image(image source, image* block_mask)
 	// Require that the source image be a valid image.
 	assert(source.img != NULL);
 
-	// TODO: Actually implement the method
-	return true;
+	// TEMPORARY: Make block_mask an empty image
+	// This should make any function that is then
+	// called with block_mask assert because it
+	// isn't a valid image.
+	block_mask->height = 0;
+	block_mask->width = 0;
+	block_mask->channels = 0;
+	block_mask->img = NULL;
+
+	// TODO: Actually implement the method.
+	// For now indicate that there is no block
+	// in the image for every provided image.
+	return false;
 }
