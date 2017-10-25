@@ -4,7 +4,7 @@
 #include "colour.h"
 #include "image.h"
 
-colour detect_colour(
+lego_colour detect_colour(
     image source,
     image block_mask);
 
