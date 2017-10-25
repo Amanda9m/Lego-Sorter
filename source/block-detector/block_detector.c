@@ -158,9 +158,9 @@ bool is_block(image source, image* block_mask)
 	assert(err == SOBEL_FILTER_SUCCESS);
 
 	//Thickening edges
-	for (int i = 0; i < mask.width; i++)
+	for (size_t i = 0; i < mask.width; i++)
 	{
-		for (int j = 0; j < mask.height; j++)
+		for (size_t j = 0; j < mask.height; j++)
 		{
 			if (img_pixel_at(mask, i, j, 1) >= edge_threshold)
 			{
@@ -177,12 +177,14 @@ bool is_block(image source, image* block_mask)
 			}
 		}
 	}
-	mask = give_mask(mask);
+	err = give_mask(source, block_mask);
+	assert(err == 0);
+	mask = *block_mask;
 	// check that there is a block within the image
 	int is_over_threshold = 0;
-	for (int i = 0; i < mask.width; i++)
+	for (size_t i = 0; i < mask.width; i++)
 	{
-		for (int j = 0; j < mask.height; j++)
+		for (size_t j = 0; j < mask.height; j++)
 		{
 			if (img_pixel_at(mask, i, j, 1) < edge_threshold) // If that pixel is dark (ie is within the block)
 				is_over_threshold++;
@@ -218,5 +220,5 @@ bool block_in_image(image source, image* block_mask)
 	block_mask->channels = 0;
 	block_mask->img = NULL;
 
-	return is_block(source, &block_mask);
+	return is_block(source, block_mask);
 }
