@@ -32,6 +32,14 @@ image give_mask(image source)
 
 bool is_block(image source, image* block_mask)
 {
+	/* Input checks */
+	// Source image must have a size
+	assert(source.width != 0 && source.height != 0);
+	// Source image must be greyscale
+	assert(source.channels == 1);
+	// For now, block_mask may not be null
+	assert(block_mask != NULL);
+
 	int is_block = 0;
 	image mask;
 	int areEdges = 0;
@@ -52,7 +60,7 @@ bool is_block(image source, image* block_mask)
 					for (int q = -1; q < 2; q++)
 					{
 						if ((i + p) > 0 && (i + p) < mask.width && (j + q) > 0 && (j + q) < mask.height)
-							img_pixel_at(mask, i + p, j + q, 1) = edge_threshold;
+							img_pixel_at(mask, i + p, j + q, 0) = edge_threshold;
 						else // The edge is very near the edge of the image, ie it is probably not wholly inclosed
 							return false;
 					}
