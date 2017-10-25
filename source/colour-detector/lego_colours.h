@@ -4,15 +4,8 @@
 #include <stdint.h>
 #include "colour.h"
 
-struct lego_colour
-{
-	uint16_t lego_id;
-	const char* colour_name;
-	colour rgb;
-};
-
 // Source: http://www.peeron.com/cgi-bin/invcgis/colorguide.cgi
-struct lego_colour lego_colours[] = {
+lego_colour lego_colours[] = {
 	//LEGONo,	Color,							R,		G,		B,		
 	{	1,		"White",					{	242,	243,	242	}	},
 	{	2,		"Grey",						{	161,	165,	162	}	},

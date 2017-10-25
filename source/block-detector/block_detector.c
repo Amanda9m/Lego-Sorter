@@ -7,11 +7,11 @@
 #include <string.h>
 
 // Accesses a pixel element at (x, y) and gives the channel component
-#define img_pixel_at(src, x, y, channel) ((src).img[y * (src).width * (src).channels + x * (src).channels + channel])
+#define img_pixel_at(src, x, y, channel) ((src).img[(y) * (src).width * (src).channels + (x) * (src).channels + (channel)])
 
 
 #define edge_threshold 128
-#define num_edge_threshhold 400
+#define num_edge_threshhold 0
 
 typedef struct
 {
@@ -66,6 +66,7 @@ point queue_dequeue(queue* q)
 		
 	point pt = q->mem[q->start];
 	q->start++;
+	q->sz_check--;
 
 	if (q->start >= q->size)
 		q->start -= q->size;
@@ -95,7 +96,7 @@ int give_mask(image source, image* mask)
 	if (!mask->img)
 		return -1;
 
-	queue q = make_queue(source.height * source.width);
+	queue q = make_queue(source.height * source.width * 4);
 	if (!q.mem)
 		return -1;
 
@@ -105,7 +106,9 @@ int give_mask(image source, image* mask)
 	{
 		point pt = queue_dequeue(&q);
 
-		img_pixel_at(*mask, pt.x, pt.y, 0) = 1;
+		if (img_pixel_at(*mask, pt.x, pt.y, 0) != 0)
+			continue;
+		img_pixel_at(*mask, pt.x, pt.y, 0) = 255;
 
 		if (pt.x > 0)
 		{
@@ -170,8 +173,8 @@ bool is_block(image source, image* block_mask)
 					{
 						if ((i + p) > 0 && (i + p) < mask.width && (j + q) > 0 && (j + q) < mask.height)
 							img_pixel_at(mask, i + p, j + q, 0) = edge_threshold;
-						else // The edge is very near the edge of the image, ie it is probably not wholly inclosed
-							return false;
+						//else // The edge is very near the edge of the image, ie it is probably not wholly inclosed
+							//return false;
 					}
 				}
 			}

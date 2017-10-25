@@ -1,6 +1,7 @@
 
 #include "pngimport.h"
 #include "block_detector.h"
+#include "colour_detector.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,6 +66,10 @@ int main(int argc, char** argv)
 	if (is_brick)
 	{
 		printf("true\n");
+
+		//lego_colour colour = detect_colour(img, mask);
+		//
+		//printf("Brick Colour: %s\n", colour.colour_name);
 	}
 	else
 	{
