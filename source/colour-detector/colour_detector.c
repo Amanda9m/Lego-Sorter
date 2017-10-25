@@ -93,10 +93,6 @@ colour detect_colour(image source, image block_mask) {
 
 	colour block = { (uint8_t)r, (uint8_t)g, (uint8_t)b };
 
-	// TODO
-	/*Comparison to known LEGO RGB values to be added.
-	  Closest value will be stored in known.*/
-
 	// find closest lego colour based on directed line segment norms
 	colour known = find_nearest_colour(block);
 
