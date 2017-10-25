@@ -2,7 +2,9 @@
 #include "opencv-sobel.h"
 
 #include <stdbool.h>
+#include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 // Accesses a pixel element at (x, y) and gives the channel component
 #define img_pixel_at(src, x, y, channel) ((src).img[y * (src).width * (src).channels + x * (src).channels + channel])
@@ -11,23 +13,130 @@
 #define edge_threshold 128
 #define num_edge_threshhold 400
 
-image give_mask(image source)
+typedef struct
 {
-	// Filling in mask
-	for (int i = 0; i < source.width; i++)
+	size_t x, y;
+} point;
+
+typedef struct
+{
+	size_t start;
+	size_t end;
+	size_t size;
+	size_t sz_check;
+	point* mem;
+} queue;
+
+queue make_queue(size_t size)
+{
+	queue q;
+
+	q.size = size;
+	q.sz_check = 0;
+	q.start = 0;
+	q.end = 0;
+	q.mem = malloc(sizeof(point) * q.size);
+
+	return q;
+}
+point make_point(size_t x, size_t y)
+{
+	point p = { x, y };
+	return p;
+}
+
+void queue_enqueue(queue* q, point pt)
+{
+	assert(q != NULL);
+
+	q->mem[q->end] = pt;
+
+	q->end++;
+	q->sz_check++;
+
+	assert(q->sz_check < q->size);
+
+	if (q->end >= q->size)
+		q->end -= q->size;
+}
+point queue_dequeue(queue* q)
+{
+	assert(q != NULL);
+	assert(q->end != q->start);
+		
+	point pt = q->mem[q->start];
+	q->start++;
+
+	if (q->start >= q->size)
+		q->start -= q->size;
+
+	return pt;
+}
+bool queue_empty(queue* q)
+{
+	return q->end == q->start;
+}
+
+int give_mask(image source, image* mask)
+{
+	// Make sure that the source has a size
+	assert(source.width != 0 && source.height != 0);
+	// Make sure that the source image is greyscale
+	assert(source.channels == 1);
+	// Make sure that mask isn't null
+	assert(mask != NULL);
+
+	mask->height = source.height;
+	mask->width = source.width;
+	mask->channels = 1;
+	// calloc automatically allocates zeroed memory
+	mask->img = calloc(1, sizeof(point) * source.height * source.width);
+
+	if (!mask->img)
+		return -1;
+
+	queue q = make_queue(source.height * source.width);
+	if (!q.mem)
+		return -1;
+
+	queue_enqueue(&q, make_point(0, 0));
+
+	while (!queue_empty(&q))
 	{
-		//Filling in from left side until it hits an edge
-		for (int j = 0; img_pixel_at(source, i, j, 1) < edge_threshold; j++)
+		point pt = queue_dequeue(&q);
+
+		img_pixel_at(*mask, pt.x, pt.y, 0) = 1;
+
+		if (pt.x > 0)
 		{
-			img_pixel_at(source, i, j, 1) = edge_threshold;
+			// Set pixel above if above is not an edge
+			if (pt.y > 0 && img_pixel_at(*mask, pt.x - 1, pt.y - 1, 0) == 0
+				&& img_pixel_at(source, pt.x - 1, pt.y - 1, 0) >= edge_threshold)
+			{
+				queue_enqueue(&q, make_point(pt.x - 1, pt.y - 1));
+			}
+			if (pt.y < source.height - 1 && img_pixel_at(*mask, pt.x - 1, pt.y + 1, 0) == 0
+				&& img_pixel_at(source, pt.x - 1, pt.y + 1, 0) >= edge_threshold)
+			{
+				queue_enqueue(&q, make_point(pt.x - 1, pt.y + 1));
+			}
 		}
-		//filling in from right side until it hits an edge
-		for (int j = source.height; img_pixel_at(source, i, j, 1) < edge_threshold; j--)
+		if (pt.x < source.width - 1)
 		{
-			img_pixel_at(source, i, j, 1) = edge_threshold;
+			if (pt.y > 0 && img_pixel_at(*mask, pt.x + 1, pt.y - 1, 0) == 0
+				&& img_pixel_at(source, pt.x + 1, pt.y - 1, 0) >= edge_threshold)
+			{
+				queue_enqueue(&q, make_point(pt.x + 1, pt.y - 1));
+			}
+			if (pt.y < source.height - 1 && img_pixel_at(*mask, pt.x + 1, pt.y + 1, 0) == 0
+				&& img_pixel_at(source, pt.x + 1, pt.y + 1, 0) >= edge_threshold)
+			{
+				queue_enqueue(&q, make_point(pt.x + 1, pt.y + 1));
+			}
 		}
 	}
-	//if it is a full block, there will be multiple rows of black, if not, the image will be almost entirely white
+
+	return 0;
 }
 
 bool is_block(image source, image* block_mask)
