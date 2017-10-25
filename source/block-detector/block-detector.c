@@ -52,6 +52,10 @@ bool is_block(image source, image* block_mask)
 		}
 	}
 	*/
+
+	// Return false to avoid undefined 
+	// behaviour when this method is called.
+	return false;
 }
 
 // Method stub for block_in_image
