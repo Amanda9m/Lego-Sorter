@@ -102,6 +102,4 @@ colour detect_colour(image source, image block_mask) {
 	*/
 
 	return known;
-
-	/**/
 }
