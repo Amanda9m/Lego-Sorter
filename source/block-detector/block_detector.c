@@ -109,8 +109,5 @@ bool block_in_image(image source, image* block_mask)
 	block_mask->channels = 0;
 	block_mask->img = NULL;
 
-	// TODO: Actually implement the method.
-	// For now indicate that there is no block
-	// in the image for every provided image.
-	return false;
+	return is_block(source, &block_mask);
 }
