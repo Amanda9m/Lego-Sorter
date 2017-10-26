@@ -10,10 +10,7 @@ project(lego-sorter)
 find_package(OpenCV REQUIRED)
 
 # Add all the sub projects to the main project
-add_subdirectory(block-identifier)
-add_subdirectory(block-detector)
-add_subdirectory(colour-detector)
-add_subdirectory(png-import)
+add_subdirectory(classifier)
 add_subdirectory(block-in-image)
 
 # Add the headers so that they can be edited more easily
