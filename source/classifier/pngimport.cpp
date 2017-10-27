@@ -14,8 +14,8 @@ extern "C" int import_image(
 	if (!output || !filename)
 		return 1;
 
-	//try
-	//{
+	try
+	{
 		cv::Mat img = cv::imread(filename);
 		img.convertTo(img, CV_8UC1);
 
@@ -38,7 +38,7 @@ extern "C" int import_image(
 
 				for (size_t i = 0; i < output->channels; ++i)
 				{
-					output->img[idx * 3 + output->channels - 1 - i] = vt[i];
+					output->img[idx * 3 + output->channels - 1 - i] = vt[(int)i];
 				}
 
 				idx++;
@@ -46,19 +46,19 @@ extern "C" int import_image(
 		}
 
 		return 0;
-	//}
-	//catch (...)
-	//{
-	//	// If there was an error cleanup to ensure as few 
-	//	// memory leaks as possible.
-	//	free(output->img);
-	//
-	//	/* If any C++ code throws an unexpected exception
-	//	   catch it and indicate that there was an error
-	//	   by returning -1. If a C++ exception propagates
-	//	   up into C code then the program will crash
-	//	   with no information given.
-	//	*/
-	//	return -1;
-	//}
+	}
+	catch (...)
+	{
+		// If there was an error cleanup to ensure as few 
+		// memory leaks as possible.
+		free(output->img);
+	
+		/* If any C++ code throws an unexpected exception
+		   catch it and indicate that there was an error
+		   by returning -1. If a C++ exception propagates
+		   up into C code then the program will crash
+		   with no information given.
+		*/
+		return -1;
+	}
 }
