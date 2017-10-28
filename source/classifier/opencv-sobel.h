@@ -22,7 +22,7 @@ enum sobel_filter_error_code
    Postconditions:
 	  - output is overwritten with a new image if the
 	    return code is SOBEL_FILTER_SUCCESS
-	  - source is the same as before
+	  - source has not been modified
 	  - If the return code is not SOBEL_FILTER_SUCCESS
 	    the state of of output is undefined
 
