@@ -161,9 +161,9 @@ bool is_block(image source, image* block_mask)
 	assert(err == SOBEL_FILTER_SUCCESS);
 
 	//Thickening edges
-	for (size_t i = 0; i < mask.width; i++)
+	for (size_t i = 1; i < (mask.width -1); i++)
 	{
-		for (size_t j = 0; j < mask.height; j++)
+		for (size_t j = 1; j < (mask.height - 1); j++)
 		{
 			if (img_pixel_at(mask, i, j, 1) >= edge_threshold)
 			{
@@ -173,8 +173,8 @@ bool is_block(image source, image* block_mask)
 					{
 						if ((i + p) > 0 && (i + p) < mask.width && (j + q) > 0 && (j + q) < mask.height)
 							img_pixel_at(mask, i + p, j + q, 0) = edge_threshold;
-						//else // The edge is very near the edge of the image, ie it is probably not wholly inclosed
-							//return false;
+						else // The edge is very near the edge of the image, ie it is probably not wholly inclosed
+							return false;
 					}
 				}
 			}
