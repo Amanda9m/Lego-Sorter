@@ -153,11 +153,10 @@ bool is_block(image source, image* block_mask)
 	// For now, block_mask may not be null
 	assert(block_mask != NULL);
 
-	int is_block = 0;
 	image mask;
 	int areEdges = 0;
 
-	enum sobel_filter_error_code err = sobel_filter(source, &mask);
+	sobel_filter_error_code err = sobel_filter(source, &mask);
 	// Really really hope that the filter succeeds
 	assert(err == SOBEL_FILTER_SUCCESS);
 
@@ -191,10 +190,11 @@ bool is_block(image source, image* block_mask)
 		for (size_t j = 0; j < mask.height; j++)
 		{
 			if (img_pixel_at(mask, i, j, 1) < edge_threshold) // If that pixel is dark (ie is within the block)
-            {
+			{
 				is_over_threshold++;
-                if((i < near_edge_threshhold) || ((mask.width - i) < near_edge_threshhold) || (j < near_edge_threshhold) || ((mask.height - j) < near_edge_threshhold)) //if the block is near/touching the edge
-                    return false;
+				if ((i < near_edge_threshhold) || ((mask.width - i) < near_edge_threshhold) || (j < near_edge_threshhold) || ((mask.height - j) < near_edge_threshhold)) //if the block is near/touching the edge
+					return false;
+			}
 		}
 	}
 	if (is_over_threshold > num_edge_threshhold) // If there is a block in the picture that is significantly large

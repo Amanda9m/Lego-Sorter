@@ -34,7 +34,7 @@ extern "C" int import_image(
 			for (size_t x = 0; x < img.cols; ++x)
 			{
 				cv::Vec<uint8_t, 3> vt = 
-					img.at<cv::Vec<uint8_t, 3>>((int)y, (int)x);
+					img.at<cv::Vec<uint8_t, 3> >((int)y, (int)x);
 
 				for (size_t i = 0; i < output->channels; ++i)
 				{

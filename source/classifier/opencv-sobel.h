@@ -3,12 +3,12 @@
 
 #include "image.h"
 
-enum sobel_filter_error_code
+typedef enum _sobel_filter_error_code
 {
 	SOBEL_FILTER_SUCCESS = 0,
 	SOBEL_FILTER_OUT_OF_MEMORY,
 	SOBEL_FILTER_INTERNAL_ERROR
-};
+} sobel_filter_error_code;
 
 /* Excecutes OpenCV's Sobel function to determine the 
    sobel filtered image given the source image.
@@ -29,7 +29,7 @@ enum sobel_filter_error_code
    Returns an error code that indicates whether an
    error occurred while executing the function.
 */
-enum sobel_filter_error_code sobel_filter(
+sobel_filter_error_code sobel_filter(
 	const image source,
 	image* output); 
 

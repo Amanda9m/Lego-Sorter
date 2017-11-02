@@ -80,7 +80,7 @@ uint8_t sobel(
 	return (uint8_t)((abs(dx) + abs(dy)) / 4);
 }
 
-enum sobel_error_code sobel_filter(
+sobel_filter_error_code sobel_filter(
 	const image source,
 	image* output)
 {
