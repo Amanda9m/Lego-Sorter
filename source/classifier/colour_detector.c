@@ -19,16 +19,18 @@
 */
 #define img_pixel(src, index, channel) ((src).img[(index) * (src).channels + (channel)])
 
-/* Mask pixels with a value above 128 are considered
+/* Mask pixels with a value above 127 are considered
    to be part of the lego block. This value can be 
    changed later to better suit what should be considered
    the lego block.
+
+   Current version has been experimented with while trying to affirm the above statement
 */
-#define edge_threshold 127
+#define edge_threshold 128
 
 lego_colour find_nearest_colour(colour guess)
 {
-#define lego_colours_size (sizeof(lego_colours) / sizeof(struct lego_colour))
+	#define lego_colours_size (sizeof(lego_colours) / sizeof(struct lego_colour))
 	/* For now do rgb comparisons, but if we 
 	   really want to pick the nearest colour
 	   visually then using a colour space that
@@ -56,7 +58,7 @@ lego_colour find_nearest_colour(colour guess)
 	}
 
 	return lego_colours[min_idx];
-#undef lego_colours_size
+	#undef lego_colours_size
 }
 
 lego_colour detect_colour(image source, image block_mask) {
@@ -79,7 +81,7 @@ lego_colour detect_colour(image source, image block_mask) {
 	
 
 	for (size_t j = 0; j < size; j++) {
-		if (img_pixel(block_mask, j, 0) >= edge_threshold) {
+		if (img_pixel(block_mask, j, 0) > edge_threshold) {
 			r += img_pixel(source, j, 0);
 			g += img_pixel(source, j, 1);
 			b += img_pixel(source, j, 2);
