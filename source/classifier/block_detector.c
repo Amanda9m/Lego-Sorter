@@ -12,6 +12,7 @@
 
 #define edge_threshold 128
 #define num_edge_threshhold 0
+#define near_edge_threshhold 2
 
 typedef struct
 {
@@ -167,14 +168,14 @@ bool is_block(image source, image* block_mask)
 		{
 			if (img_pixel_at(mask, i, j, 1) >= edge_threshold)
 			{
-				for (int p = -1; p < 2; p++)
+				for (int p = -2; p < 3; p++)
 				{
-					for (int q = -1; q < 2; q++)
+					for (int q = -2; q < 3; q++)
 					{
 						if ((i + p) > 0 && (i + p) < mask.width && (j + q) > 0 && (j + q) < mask.height)
 							img_pixel_at(mask, i + p, j + q, 0) = edge_threshold;
-						else // The edge is very near the edge of the image, ie it is probably not wholly inclosed
-							return false;
+						// else // The edge is very near the edge of the image, ie it is probably not wholly inclosed
+							// return false;
 					}
 				}
 			}
@@ -190,7 +191,10 @@ bool is_block(image source, image* block_mask)
 		for (size_t j = 0; j < mask.height; j++)
 		{
 			if (img_pixel_at(mask, i, j, 1) < edge_threshold) // If that pixel is dark (ie is within the block)
+            {
 				is_over_threshold++;
+                if((i < near_edge_threshhold) || ((mask.width - i) < near_edge_threshhold) || (j < near_edge_threshhold) || ((mask.height - j) < near_edge_threshhold)) //if the block is near/touching the edge
+                    return false;
 		}
 	}
 	if (is_over_threshold > num_edge_threshhold) // If there is a block in the picture that is significantly large

@@ -31,6 +31,6 @@ enum sobel_filter_error_code
 */
 enum sobel_filter_error_code sobel_filter(
 	const image source,
-	image* output);
+	image* output); 
 
 #endif
