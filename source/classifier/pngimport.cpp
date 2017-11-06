@@ -62,3 +62,14 @@ extern "C" int import_image(
 		return -1;
 	}
 }
+
+extern "C" int debug_export(
+	image img,
+	const char* filename)
+{
+	cv::Mat mat = cv::Mat(img.height, img.width, CV_8UC1, img.img);
+
+	cv::imwrite(filename, mat);
+
+	return 0;
+}

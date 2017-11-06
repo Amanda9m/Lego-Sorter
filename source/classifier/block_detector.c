@@ -1,16 +1,25 @@
 
 #include "opencv-sobel.h"
+#include "pngimport.h"
 
 #include <stdbool.h>
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 
+uint8_t* pixel_at_impl(image src, size_t x, size_t y, size_t c)
+{
+	assert(x < src.width);
+	assert(y < src.height);
+	assert(c < src.channels);
+
+	return &src.img[y * src.width * src.channels + x * src.channels + c];
+}
+
 // Accesses a pixel element at (x, y) and gives the channel component
-#define img_pixel_at(src, x, y, channel) ((src).img[(y) * (src).width * (src).channels + (x) * (src).channels + (channel)])
+#define img_pixel_at(src, x, y, channel) (*pixel_at_impl((src), (x), (y), (channel)))
 
-
-#define edge_threshold 128
+#define edge_threshold 64
 #define num_edge_threshold 0
 #define near_edge_threshold 2
 
@@ -111,43 +120,37 @@ int calc_mask(image source, image* mask)
 			continue;
 		img_pixel_at(*mask, pt.x, pt.y, 0) = 255;
 
-		if (pt.x > 0)
+		if (pt.x > 0 && img_pixel_at(*mask, pt.x - 1, pt.y, 0) == 0
+			&& img_pixel_at(source, pt.x - 1, pt.y, 0) < edge_threshold)
 		{
-			// Set pixel above if above is not an edge
-			if (pt.y > 0 && img_pixel_at(*mask, pt.x - 1, pt.y - 1, 0) == 0
-				&& img_pixel_at(source, pt.x - 1, pt.y - 1, 0) >= edge_threshold)
-			{
-				queue_enqueue(&q, make_point(pt.x - 1, pt.y - 1));
-			}
-			if (pt.y < source.height - 1 && img_pixel_at(*mask, pt.x - 1, pt.y + 1, 0) == 0
-				&& img_pixel_at(source, pt.x - 1, pt.y + 1, 0) >= edge_threshold)
-			{
-				queue_enqueue(&q, make_point(pt.x - 1, pt.y + 1));
-			}
+			queue_enqueue(&q, make_point(pt.x - 1, pt.y));
 		}
-		if (pt.x < source.width - 1)
+		if (pt.x < source.width - 1 && img_pixel_at(*mask, pt.x + 1, pt.y, 0) == 0
+			&& img_pixel_at(source, pt.x + 1, pt.y, 0) < edge_threshold)
 		{
-			if (pt.y > 0 && img_pixel_at(*mask, pt.x + 1, pt.y - 1, 0) == 0
-				&& img_pixel_at(source, pt.x + 1, pt.y - 1, 0) >= edge_threshold)
-			{
-				queue_enqueue(&q, make_point(pt.x + 1, pt.y - 1));
-			}
-			if (pt.y < source.height - 1 && img_pixel_at(*mask, pt.x + 1, pt.y + 1, 0) == 0
-				&& img_pixel_at(source, pt.x + 1, pt.y + 1, 0) >= edge_threshold)
-			{
-				queue_enqueue(&q, make_point(pt.x + 1, pt.y + 1));
-			}
+			queue_enqueue(&q, make_point(pt.x + 1, pt.y));
+		}
+
+		if (pt.y > 0 && img_pixel_at(*mask, pt.x, pt.y - 1, 0) == 0
+			&& img_pixel_at(source, pt.x, pt.y - 1, 0) < edge_threshold)
+		{
+			queue_enqueue(&q, make_point(pt.x, pt.y - 1));
+		}
+		if (pt.y < source.height - 1 && img_pixel_at(*mask, pt.x, pt.y + 1, 0) == 0
+			&& img_pixel_at(source, pt.x, pt.y + 1, 0) < edge_threshold)
+		{
+			queue_enqueue(&q, make_point(pt.x, pt.y + 1));
 		}
 	}
 
-	for (size_t y = 0; y < source.height; ++y)
-	{
-		for (size_t x = 0; x < source.width; ++x)
-		{
-			if (img_pixel_at(source, x, y, 1) >= edge_threshold)
-				img_pixel_at(*mask, x, y, 1) = 255;
-		}
-	}
+	//for (size_t y = 0; y < source.height; ++y)
+	//{
+	//	for (size_t x = 0; x < source.width; ++x)
+	//	{
+	//		if (img_pixel_at(source, x, y, 1) >= edge_threshold)
+	//			img_pixel_at(*mask, x, y, 1) = 255;
+	//	}
+	//}
 
 	return 0;
 }
@@ -170,19 +173,19 @@ int thicken_edges(image mask, image* out_mask)
 	{
 		for (size_t x = 1; x < mask.width - 1; ++x)
 		{
-			if (img_pixel_at(mask, x, y, 1) >= edge_threshold)
+			if (img_pixel_at(mask, x, y, 0) >= edge_threshold)
 			{
-				img_pixel_at(*out_mask, x - 1, y - 1, 1) = UINT8_MAX;
-				img_pixel_at(*out_mask, x - 1, y, 1) = UINT8_MAX;
-				img_pixel_at(*out_mask, x - 1, y + 1, 1) = UINT8_MAX;
+				img_pixel_at(*out_mask, x - 1, y - 1, 0) = UINT8_MAX;
+				img_pixel_at(*out_mask, x - 1, y, 0) = UINT8_MAX;
+				img_pixel_at(*out_mask, x - 1, y + 1, 0) = UINT8_MAX;
 
-				img_pixel_at(*out_mask, x, y - 1, 1) = UINT8_MAX;
-				img_pixel_at(*out_mask, x, y, 1) = UINT8_MAX;
-				img_pixel_at(*out_mask, x, y + 1, 1) = UINT8_MAX;
+				img_pixel_at(*out_mask, x, y - 1, 0) = UINT8_MAX;
+				img_pixel_at(*out_mask, x, y, 0) = UINT8_MAX;
+				img_pixel_at(*out_mask, x, y + 1, 0) = UINT8_MAX;
 
-				img_pixel_at(*out_mask, x + 1, y - 1, 1) = UINT8_MAX;
-				img_pixel_at(*out_mask, x + 1, y, 1) = UINT8_MAX;
-				img_pixel_at(*out_mask, x + 1, y + 1, 1) = UINT8_MAX;
+				img_pixel_at(*out_mask, x + 1, y - 1, 0) = UINT8_MAX;
+				img_pixel_at(*out_mask, x + 1, y, 0) = UINT8_MAX;
+				img_pixel_at(*out_mask, x + 1, y + 1, 0) = UINT8_MAX;
 			}
 		}
 	}
@@ -200,7 +203,7 @@ bool block_near_edge(image mask)
 	{
 		for (uint32_t x = 0; x < mask.width; ++x)
 		{
-			if (img_pixel_at(mask, x, y, 1) < edge_threshold)
+			if (img_pixel_at(mask, x, y, 0) >= edge_threshold)
 				return true;
 		}
 	}
@@ -210,13 +213,13 @@ bool block_near_edge(image mask)
 	{
 		for (uint32_t x = 0; x < near_edge_threshold; ++x)
 		{
-			if (img_pixel_at(mask, x, y, 1) >= edge_threshold)
+			if (img_pixel_at(mask, x, y, 0) >= edge_threshold)
 				return true;
 		}
 
 		for (uint32_t x = mask.width - near_edge_threshold; x < mask.width; ++x)
 		{
-			if (img_pixel_at(mask, x, y, 1) >= edge_threshold)
+			if (img_pixel_at(mask, x, y, 0) >= edge_threshold)
 				return true;
 		}
 	}
@@ -226,12 +229,35 @@ bool block_near_edge(image mask)
 	{
 		for (uint32_t x = 0; x < mask.width; ++x)
 		{
-			if (img_pixel_at(mask, x, y, 1) >= edge_threshold)
+			if (img_pixel_at(mask, x, y, 0) >= edge_threshold)
 				return true;
 		}
 	}
 
 	return false;
+}
+bool exists_mask_space(image mask, image edges, size_t blank_count)
+{
+	assert(mask.width == edges.width);
+	assert(mask.height == edges.height);
+	assert(mask.channels == 1 && edges.channels == 1);
+	assert(mask.img != NULL && edges.img != NULL);
+
+	size_t count = 0;
+
+	for (size_t y = 0; y < mask.height; ++y)
+	{
+		for (size_t x = 0; x < mask.width; ++x)
+		{
+			if (img_pixel_at(mask, x, y, 0) < edge_threshold &&
+				img_pixel_at(edges, x, y, 0) < edge_threshold)
+			{
+				count++;
+			}
+		}
+	}
+
+	return count >= blank_count;
 }
 
 bool is_block(image source, image* block_mask)
@@ -263,16 +289,29 @@ bool is_block(image source, image* block_mask)
 		// would have to clean up memory though
 		assert(false);
 
+	bool result = true;
+
+	if (!exists_mask_space(*block_mask, edges, num_edge_threshold))
+		result = false;
+
+	debug_export(sobel, "sobel.png");
+	debug_export(edges, "edges.png");
+
 	free(sobel.img);
 	free(edges.img);
 
 	if (block_near_edge(*block_mask))
+		result = false;
+
+	debug_export(*block_mask, "mask.png");
+	
+	if (!result)
 	{
 		free(block_mask->img);
-		return false;
+		block_mask->img = NULL;
 	}
 
-	return true;
+	return result;
 }
 
 // Method stub for block_in_image

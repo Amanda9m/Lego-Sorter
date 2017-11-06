@@ -17,4 +17,8 @@ int import_image(
 	const char* filename,
 	image* output);
 
+int debug_export(
+	image img,
+	const char* filename);
+
 #endif

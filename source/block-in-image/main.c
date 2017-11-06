@@ -70,6 +70,8 @@ int main(int argc, char** argv)
 		//lego_colour colour = detect_colour(img, mask);
 		//
 		//printf("Brick Colour: %s\n", colour.colour_name);
+
+		free(mask.img);
 	}
 	else
 	{
@@ -78,7 +80,6 @@ int main(int argc, char** argv)
 
 	// Clean up all used resources
 	free(img.img);
-	free(mask.img);
 	free(greyscale.img);
 
 	return 0;
