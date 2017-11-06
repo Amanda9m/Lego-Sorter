@@ -19,9 +19,16 @@ uint8_t* pixel_at_impl(image src, size_t x, size_t y, size_t c)
 // Accesses a pixel element at (x, y) and gives the channel component
 #define img_pixel_at(src, x, y, channel) (*pixel_at_impl((src), (x), (y), (channel)))
 
+// The image pixel value within the sobel filter
+// such that the pixel is considered an edge
 #define edge_threshold 64
-#define num_edge_threshold 0
-#define near_edge_threshold 2
+// The minimum distance the block must be away
+// from the edge for the block to be considered
+// a valid image to use
+#define min_edge_dist 20
+// The minimum number of block pixels for the image 
+// to be valid
+#define min_block_pixels 1000
 
 typedef struct
 {
@@ -199,37 +206,37 @@ bool block_near_edge(image mask)
 	assert(mask.img);
 
 	// Loop over top of image
-	for (uint32_t y = 0; y < near_edge_threshold; ++y)
+	for (uint32_t y = 0; y < min_edge_dist; ++y)
 	{
 		for (uint32_t x = 0; x < mask.width; ++x)
 		{
-			if (img_pixel_at(mask, x, y, 0) >= edge_threshold)
+			if (img_pixel_at(mask, x, y, 0) < edge_threshold)
 				return true;
 		}
 	}
 
 	// Loop over middle of image
-	for (uint32_t y = near_edge_threshold; y < mask.height - near_edge_threshold; ++y)
+	for (uint32_t y = min_edge_dist; y < mask.height - min_edge_dist; ++y)
 	{
-		for (uint32_t x = 0; x < near_edge_threshold; ++x)
+		for (uint32_t x = 0; x < min_edge_dist; ++x)
 		{
-			if (img_pixel_at(mask, x, y, 0) >= edge_threshold)
+			if (img_pixel_at(mask, x, y, 0) < edge_threshold)
 				return true;
 		}
 
-		for (uint32_t x = mask.width - near_edge_threshold; x < mask.width; ++x)
+		for (uint32_t x = mask.width - min_edge_dist; x < mask.width; ++x)
 		{
-			if (img_pixel_at(mask, x, y, 0) >= edge_threshold)
+			if (img_pixel_at(mask, x, y, 0) < edge_threshold)
 				return true;
 		}
 	}
 
 	// Loop over bottom of image
-	for (uint32_t y = mask.height - near_edge_threshold; y < mask.height; ++y)
+	for (uint32_t y = mask.height - min_edge_dist; y < mask.height; ++y)
 	{
 		for (uint32_t x = 0; x < mask.width; ++x)
 		{
-			if (img_pixel_at(mask, x, y, 0) >= edge_threshold)
+			if (img_pixel_at(mask, x, y, 0) < edge_threshold)
 				return true;
 		}
 	}
@@ -291,7 +298,7 @@ bool is_block(image source, image* block_mask)
 
 	bool result = true;
 
-	if (!exists_mask_space(*block_mask, edges, num_edge_threshold))
+	if (!exists_mask_space(*block_mask, edges, min_block_pixels))
 		result = false;
 
 	debug_export(sobel, "sobel.png");
