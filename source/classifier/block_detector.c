@@ -11,8 +11,8 @@
 
 
 #define edge_threshold 128
-#define num_edge_threshhold 0
-#define near_edge_threshhold 2
+#define num_edge_threshold 0
+#define near_edge_threshold 2
 
 typedef struct
 {
@@ -79,7 +79,7 @@ bool queue_empty(queue* q)
 	return q->end == q->start;
 }
 
-int give_mask(image source, image* mask)
+int calc_mask(image source, image* mask)
 {
 	// Make sure that the source has a size
 	assert(source.width != 0 && source.height != 0);
@@ -140,7 +140,98 @@ int give_mask(image source, image* mask)
 		}
 	}
 
+	for (size_t y = 0; y < source.height; ++y)
+	{
+		for (size_t x = 0; x < source.width; ++x)
+		{
+			if (img_pixel_at(source, x, y, 1) >= edge_threshold)
+				img_pixel_at(*mask, x, y, 1) = 255;
+		}
+	}
+
 	return 0;
+}
+int thicken_edges(image mask, image* out_mask)
+{
+	assert(mask.channels == 1);
+	assert(mask.height != 0 && mask.width != 0);
+	assert(mask.img != NULL);
+	assert(out_mask != NULL);
+
+	out_mask->channels = 1;
+	out_mask->height = mask.height;
+	out_mask->width = mask.width;
+	out_mask->img = calloc(1, sizeof(uint8_t) * mask.width * mask.height);
+
+	if (!out_mask->img)
+		return 1;
+
+	for (size_t y = 1; y < mask.height - 1; ++y)
+	{
+		for (size_t x = 1; x < mask.width - 1; ++x)
+		{
+			if (img_pixel_at(mask, x, y, 1) >= edge_threshold)
+			{
+				img_pixel_at(*out_mask, x - 1, y - 1, 1) = UINT8_MAX;
+				img_pixel_at(*out_mask, x - 1, y, 1) = UINT8_MAX;
+				img_pixel_at(*out_mask, x - 1, y + 1, 1) = UINT8_MAX;
+
+				img_pixel_at(*out_mask, x, y - 1, 1) = UINT8_MAX;
+				img_pixel_at(*out_mask, x, y, 1) = UINT8_MAX;
+				img_pixel_at(*out_mask, x, y + 1, 1) = UINT8_MAX;
+
+				img_pixel_at(*out_mask, x + 1, y - 1, 1) = UINT8_MAX;
+				img_pixel_at(*out_mask, x + 1, y, 1) = UINT8_MAX;
+				img_pixel_at(*out_mask, x + 1, y + 1, 1) = UINT8_MAX;
+			}
+		}
+	}
+
+	return 0;
+}
+bool block_near_edge(image mask)
+{
+	assert(mask.channels == 1);
+	assert(mask.height != 0 && mask.width != 0);
+	assert(mask.img);
+
+	// Loop over top of image
+	for (uint32_t y = 0; y < near_edge_threshold; ++y)
+	{
+		for (uint32_t x = 0; x < mask.width; ++x)
+		{
+			if (img_pixel_at(mask, x, y, 1) < edge_threshold)
+				return true;
+		}
+	}
+
+	// Loop over middle of image
+	for (uint32_t y = near_edge_threshold; y < mask.height - near_edge_threshold; ++y)
+	{
+		for (uint32_t x = 0; x < near_edge_threshold; ++x)
+		{
+			if (img_pixel_at(mask, x, y, 1) >= edge_threshold)
+				return true;
+		}
+
+		for (uint32_t x = mask.width - near_edge_threshold; x < mask.width; ++x)
+		{
+			if (img_pixel_at(mask, x, y, 1) >= edge_threshold)
+				return true;
+		}
+	}
+
+	// Loop over bottom of image
+	for (uint32_t y = mask.height - near_edge_threshold; y < mask.height; ++y)
+	{
+		for (uint32_t x = 0; x < mask.width; ++x)
+		{
+			if (img_pixel_at(mask, x, y, 1) >= edge_threshold)
+				return true;
+		}
+	}
+
+	return false;
 }
 
 bool is_block(image source, image* block_mask)
@@ -153,54 +244,35 @@ bool is_block(image source, image* block_mask)
 	// For now, block_mask may not be null
 	assert(block_mask != NULL);
 
-	image mask;
+	image sobel, edges;
 	int areEdges = 0;
 
-	sobel_filter_error_code err = sobel_filter(source, &mask);
-	// Really really hope that the filter succeeds
-	assert(err == SOBEL_FILTER_SUCCESS);
+	if (sobel_filter(source, &sobel) != SOBEL_FILTER_SUCCESS)
+		// Optionally could return an error code here
+		// would have to clean up memory though
+		assert(false);
 
 	//Thickening edges
-	for (size_t i = 1; i < (mask.width -1); i++)
+	if (thicken_edges(sobel, &edges) != 0)
+		// Optionally could return an error code here
+		// would have to clean up memory though
+		assert(false);
+
+	if (calc_mask(edges, block_mask) != 0)
+		// Optionally could return an error code here
+		// would have to clean up memory though
+		assert(false);
+
+	free(sobel.img);
+	free(edges.img);
+
+	if (block_near_edge(*block_mask))
 	{
-		for (size_t j = 1; j < (mask.height - 1); j++)
-		{
-			if (img_pixel_at(mask, i, j, 1) >= edge_threshold)
-			{
-				for (int p = -2; p < 3; p++)
-				{
-					for (int q = -2; q < 3; q++)
-					{
-						if ((i + p) > 0 && (i + p) < mask.width && (j + q) > 0 && (j + q) < mask.height)
-							img_pixel_at(mask, i + p, j + q, 0) = edge_threshold;
-						// else // The edge is very near the edge of the image, ie it is probably not wholly inclosed
-							// return false;
-					}
-				}
-			}
-		}
-	}
-	err = give_mask(source, block_mask);
-	assert(err == 0);
-	mask = *block_mask;
-	// check that there is a block within the image
-	int is_over_threshold = 0;
-	for (size_t i = 0; i < mask.width; i++)
-	{
-		for (size_t j = 0; j < mask.height; j++)
-		{
-			if (img_pixel_at(mask, i, j, 1) < edge_threshold) // If that pixel is dark (ie is within the block)
-			{
-				is_over_threshold++;
-				if ((i < near_edge_threshhold) || ((mask.width - i) < near_edge_threshhold) || (j < near_edge_threshhold) || ((mask.height - j) < near_edge_threshhold)) //if the block is near/touching the edge
-					return false;
-			}
-		}
-	}
-	if (is_over_threshold > num_edge_threshhold) // If there is a block in the picture that is significantly large
-		return true;
-	else
+		free(block_mask->img);
 		return false;
+	}
+
+	return true;
 }
 
 // Method stub for block_in_image

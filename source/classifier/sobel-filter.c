@@ -43,13 +43,13 @@ uint8_t pixel_at(
 	// Clamp x
 	if (x < 0)
 		x = 0;
-	else if (x >= img->width)
+	else if ((uint32_t)x >= img->width)
 		x = (int32_t)img->width - 1;
 
 	// Clamp y
 	if (y < 0)
 		y = 0;
-	else if (y >= img->height)
+	else if ((uint32_t)y >= img->height)
 		y = (int32_t)img->height - 1;
 
 	return img->img[y * (int32_t)img->width + x];

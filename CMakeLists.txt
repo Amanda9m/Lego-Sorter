@@ -6,7 +6,16 @@ include(ExternalProject)
 
 ExternalProject_Add(opencv
 	URL https://github.com/opencv/opencv/archive/3.3.0.zip
-	CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}" 
+	CMAKE_ARGS "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}"
+		-DWITH_CUDA=OFF 
+		-DBUILD_opencv_python3=OFF
+		-DBUILD_opencv_python2=OFF
+		-DBUILD_EXAMPLES=OFF
+		-DBUILD_opencv_apps=OFF
+		-DBUILD_DOCS=OFF
+		-DBUILD_PERF_TESTS=OFF
+		-DBUILD_TESTS=OFF
+		-DCMAKE_BUILD_TYPE=RELEASE
 )
 
 ExternalProject_Add(lego-sorter
