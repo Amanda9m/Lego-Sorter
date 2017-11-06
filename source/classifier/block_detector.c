@@ -150,14 +150,14 @@ int calc_mask(image source, image* mask)
 		}
 	}
 
-	//for (size_t y = 0; y < source.height; ++y)
-	//{
-	//	for (size_t x = 0; x < source.width; ++x)
-	//	{
-	//		if (img_pixel_at(source, x, y, 1) >= edge_threshold)
-	//			img_pixel_at(*mask, x, y, 1) = 255;
-	//	}
-	//}
+	for (size_t y = 0; y < source.height; ++y)
+	{
+		for (size_t x = 0; x < source.width; ++x)
+		{
+			if (img_pixel_at(source, x, y, 0) >= edge_threshold)
+				img_pixel_at(*mask, x, y, 0) = 255;
+		}
+	}
 
 	return 0;
 }
