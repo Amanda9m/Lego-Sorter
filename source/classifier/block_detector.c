@@ -25,10 +25,12 @@ uint8_t* pixel_at_impl(image src, size_t x, size_t y, size_t c)
 // The minimum distance the block must be away
 // from the edge for the block to be considered
 // a valid image to use
-#define min_edge_dist 20
+#define min_edge_dist 16
 // The minimum number of block pixels for the image 
 // to be valid
 #define min_block_pixels 1000
+
+#define THICKNESS 5
 
 typedef struct
 {
@@ -118,6 +120,9 @@ int calc_mask(image source, image* mask)
 		return -1;
 
 	queue_enqueue(&q, make_point(0, 0));
+	queue_enqueue(&q, make_point(source.width - 1, 0));
+	queue_enqueue(&q, make_point(0, source.height - 1));
+	queue_enqueue(&q, make_point(source.width - 1, source.height - 1));
 
 	while (!queue_empty(&q))
 	{
@@ -175,24 +180,20 @@ int thicken_edges(image mask, image* out_mask)
 
 	if (!out_mask->img)
 		return 1;
-
-	for (size_t y = 1; y < mask.height - 1; ++y)
+	
+	for (size_t y = THICKNESS; y < mask.height - THICKNESS; ++y)
 	{
-		for (size_t x = 1; x < mask.width - 1; ++x)
+		for (size_t x = THICKNESS; x < mask.width - THICKNESS; ++x)
 		{
 			if (img_pixel_at(mask, x, y, 0) >= edge_threshold)
 			{
-				img_pixel_at(*out_mask, x - 1, y - 1, 0) = UINT8_MAX;
-				img_pixel_at(*out_mask, x - 1, y, 0) = UINT8_MAX;
-				img_pixel_at(*out_mask, x - 1, y + 1, 0) = UINT8_MAX;
-
-				img_pixel_at(*out_mask, x, y - 1, 0) = UINT8_MAX;
-				img_pixel_at(*out_mask, x, y, 0) = UINT8_MAX;
-				img_pixel_at(*out_mask, x, y + 1, 0) = UINT8_MAX;
-
-				img_pixel_at(*out_mask, x + 1, y - 1, 0) = UINT8_MAX;
-				img_pixel_at(*out_mask, x + 1, y, 0) = UINT8_MAX;
-				img_pixel_at(*out_mask, x + 1, y + 1, 0) = UINT8_MAX;
+				for (int i = -THICKNESS; i <= THICKNESS; ++i)
+				{
+					for (int j = -THICKNESS; j <= THICKNESS; ++j)
+					{
+						img_pixel_at(*out_mask, x + i, y + j, 0) = UINT8_MAX;
+					}
+				}
 			}
 		}
 	}
@@ -273,7 +274,7 @@ bool is_block(image source, image* block_mask)
 	// Source image must have a size
 	assert(source.width != 0 && source.height != 0);
 	// Source image must be greyscale
-	assert(source.channels == 1);
+	//assert(source.channels == 1);
 	// For now, block_mask may not be null
 	assert(block_mask != NULL);
 
@@ -307,8 +308,8 @@ bool is_block(image source, image* block_mask)
 	free(sobel.img);
 	free(edges.img);
 
-	if (block_near_edge(*block_mask))
-		result = false;
+	//if (block_near_edge(*block_mask))
+	//	result = false;
 
 	debug_export(*block_mask, "mask.png");
 	
@@ -331,7 +332,7 @@ bool block_in_image(image source, image* block_mask)
 	assert(source.height != 0 && source.height != 0);
 
 	// block_in_image requires that the image be greyscale
-	assert(source.channels == 1);
+	//assert(source.channels == 1);
 
 	// Require that the source image be a valid image.
 	assert(source.img != NULL);

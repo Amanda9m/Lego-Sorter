@@ -3,21 +3,21 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include <assert.h>
 
-/*
-	Horizontal Matrix:
-	
-	| 1  0 -1 |
-	| 2  0 -2 |
-	| 1  0 -1 |
-	
-	Vertical Matrix:
-	
-	|  1  2  1 |
-	|  0  0  0 |
-	| -1 -2 -1 |
-*/
+#define FILTER_SIZE 3
+#define OFFSET (FILTER_SIZE/2)
+
+#define abs16(x) ((x) < 0 ? -(x) : (x))
+
+typedef struct
+{
+	const int16_t(*kernelx)[FILTER_SIZE];
+	const int16_t(*kernely)[FILTER_SIZE];
+	int16_t norm;
+} filter_desc;
+
 int16_t kernelx[3][3] = {
 	{ -1, 0, 1 },
 	{ -2, 0, 2 },
@@ -29,97 +29,126 @@ int16_t kernely[3][3] = {
 	{ -1, -2, -1 },
 };
 
-/* Returns the pixel at the given coordinates
-   if a coordinate is out of bounds then it 
-   clamps the access to the nearest edge.
-   This clamping is required to evaluate the
-   edge pixels with the filter.
-*/
 uint8_t pixel_at(
 	const image* img,
-	int32_t x,
-	int32_t y)
+	int64_t x,
+	int64_t y,
+	size_t channel)
 {
+	assert(channel < img->channels);
+
 	// Clamp x
 	if (x < 0)
 		x = 0;
-	else if ((uint32_t)x >= img->width)
-		x = (int32_t)img->width - 1;
+	else if ((size_t)x >= img->width)
+		x = (int64_t)img->width - 1;
 
 	// Clamp y
 	if (y < 0)
 		y = 0;
-	else if ((uint32_t)y >= img->height)
-		y = (int32_t)img->height - 1;
+	else if ((size_t)y >= img->height)
+		y = (int64_t)img->height - 1;
 
-	return img->img[y * (int32_t)img->width + x];
+	return img->img[(size_t)y * img->width * img->channels
+		+ (size_t)x * img->channels + channel];
 }
 
-uint8_t sobel(
+uint8_t value_at(
+	const filter_desc* desc,
 	const image* img,
-	int32_t x,
-	int32_t y)
+	int64_t x,
+	int64_t y,
+	size_t channel)
 {
-	int16_t dx = 0, dy = 0;
+	assert(desc != NULL);
+	assert(img != NULL);
 
-	for (int32_t i = -1; i < 2; ++i)
+	int32_t dx = 0, dy = 0;
+
+	for (int32_t i = 0; i < FILTER_SIZE; ++i)
 	{
-		for (int32_t j = -1; j < 2; ++j)
+		for (int32_t j = 0; j < FILTER_SIZE; ++j)
 		{
-			int16_t pixel = pixel_at(
+			int32_t pixel = pixel_at(
 				img,
-				x + i,
-				y + j);
+				x + i - OFFSET,
+				y + j - OFFSET,
+				channel);
 
-			dx += pixel * kernelx[i + 1][j + 1];
-			dy += pixel * kernely[i + 1][j + 1];
+			dx += pixel * desc->kernelx[i][j];
+			dy += pixel * desc->kernely[i][j];
 		}
 	}
 
 	// Divide by 4 to normalize back into the range of uint8_t
-	return (uint8_t)((abs(dx) + abs(dy)) / 4);
+	return (uint8_t)((abs16(dx) + abs16(dy)) / desc->norm);
 }
+
+void filter(
+	uint8_t* output,
+	const image* img,
+	const filter_desc* desc)
+{
+	// Arguments are non-null
+	assert(!!output);
+	assert(!!desc);
+
+	// Verify that desc->img is valid
+	assert(img->img != NULL);
+	assert(img->width * img->height * img->channels != 0);
+
+	// Verify that desc is valid
+	assert(desc->kernelx != NULL);
+	assert(desc->kernely != NULL);
+	assert(desc->norm != 0);
+
+#define height (img->height)
+#define width (img->width)
+#define channels (img->channels)
+
+	for (uint32_t y = 0; y < height; ++y)
+	{
+		for (uint32_t x = 0; x < width; ++x)
+		{
+			uint32_t sum = 0;
+
+			for (uint32_t c = 0; c < channels; ++c)
+			{
+				sum += value_at(desc, img, x, y, c);
+			}
+
+			output[y * width + x] 
+				= sum > 255 ? 255 : sum;
+		}
+	}
+
+#undef height
+#undef width
+#undef channels
+}
+
 
 sobel_filter_error_code sobel_filter(
 	const image source,
 	image* output)
 {
-	// Ensure source image is valid
-	assert(source.width != 0 && source.height != 0);
-	// Ensure source image is greyscale
-	assert(source.channels == 1);
-	// Ensure source image is valid, some more
-	assert(source.img != NULL);
-	// Ensure output image is a valid pointer
-	assert(output != NULL);
+	filter_desc kernel = {
+		kernelx,
+		kernely,
+		4
+	};
 
-	// Make sure all conversions used are ok
-	assert(source.width < INT32_MAX);
-	assert(source.height < INT32_MAX);
+	uint8_t *out = malloc(sizeof(uint8_t) * source.height * source.width);
 
-	output->width = source.width;
-	output->height = source.height;
-	output->channels = 1;
-
-	output->img = malloc(sizeof(uint8_t) * source.width * source.height);
-
-	if (!output->img)
-	{
-		output->width = 0;
-		output->height = 0;
-
+	if (!out)
 		return SOBEL_FILTER_OUT_OF_MEMORY;
-	}
 
-	for (size_t y = 0; y < source.height; ++y)
-	{
-		for (size_t x = 0; x < source.width; ++x)
-		{
-			// Use int32_t to accomodate negative indices
-			output->img[y * source.width + x] =
-				sobel(&source, (int32_t)x, (int32_t)y);
-		}
-	}
+	output->img = out;
+	output->channels = 1;
+	output->height = source.height;
+	output->width = source.width;
+
+	filter(out, &source, &kernel);
 
 	return SOBEL_FILTER_SUCCESS;
 }

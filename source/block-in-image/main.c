@@ -61,15 +61,15 @@ int main(int argc, char** argv)
 	// Use block_in_image to determine whether there 
 	// is a block in the image. Mask is unused because
 	// we will do nothing else other than use result.
-	bool is_brick = block_in_image(greyscale, &mask);
+	bool is_brick = block_in_image(img, &mask);
 
 	if (is_brick)
 	{
 		printf("true\n");
 
-		//lego_colour colour = detect_colour(img, mask);
-		//
-		//printf("Brick Colour: %s\n", colour.colour_name);
+		lego_colour colour = detect_colour(img, mask);
+		
+		printf("Brick Colour: %s\n", colour.colour_name);
 
 		free(mask.img);
 	}
