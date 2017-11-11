@@ -36,7 +36,7 @@ lego_colour find_nearest_colour(colour guess)
 	   better results.
 	*/
 
-	int32_t current_min = UINT32_MAX;
+	uint32_t current_min = UINT32_MAX;
 	size_t min_idx = 0;
 
 	for (size_t i = 0; i < lego_colours_size; ++i)
@@ -45,7 +45,7 @@ lego_colour find_nearest_colour(colour guess)
 		const int32_t dist_g = (int32_t)lego_colours[i].rgb.g - guess.g;
 		const int32_t dist_b = (int32_t)lego_colours[i].rgb.b - guess.b;
 
-		const int32_t result = (dist_r * dist_r) + 
+		const uint32_t result = (dist_r * dist_r) + 
 			(dist_g * dist_g) + (dist_b * dist_b);
 
 		if (result < current_min)

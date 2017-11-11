@@ -4,6 +4,7 @@ extern "C" {
 
 #include "opencv2/core.hpp"
 #include "opencv2/highgui.hpp"
+#include "opencv2/imgproc.hpp"
 
 #include <cstdlib>
 
@@ -18,6 +19,7 @@ extern "C" int import_image(
 	{
 		cv::Mat img = cv::imread(filename);
 		img.convertTo(img, CV_8UC1);
+		//cv::cvtColor(img, img, CV_RGB2BGR);
 
 		output->height = img.rows;
 		output->width = img.cols;
@@ -33,7 +35,7 @@ extern "C" int import_image(
 		{
 			for (size_t x = 0; x < img.cols; ++x)
 			{
-				cv::Vec<uint8_t, 3> vt = 
+				cv::Vec<uint8_t, 3> vt =
 					img.at<cv::Vec<uint8_t, 3> >((int)y, (int)x);
 
 				for (size_t i = 0; i < output->channels; ++i)
@@ -52,7 +54,7 @@ extern "C" int import_image(
 		// If there was an error cleanup to ensure as few 
 		// memory leaks as possible.
 		free(output->img);
-	
+
 		/* If any C++ code throws an unexpected exception
 		   catch it and indicate that there was an error
 		   by returning -1. If a C++ exception propagates
@@ -67,8 +69,10 @@ extern "C" int debug_export(
 	image img,
 	const char* filename)
 {
-	cv::Mat mat = cv::Mat(img.height, img.width, CV_8UC1, img.img);
-
+	int type = CV_MAKETYPE(CV_8U, img.channels);
+	cv::Mat mat = cv::Mat(img.height, img.width, type, img.img);
+	if (img.channels == 3)
+		cv::cvtColor(mat, mat, CV_RGB2BGR);
 	cv::imwrite(filename, mat);
 
 	return 0;

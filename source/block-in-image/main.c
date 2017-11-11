@@ -7,6 +7,36 @@
 #include <stdlib.h>
 #include <assert.h>
 
+image im_mask(const image im1, const image im2)
+{
+	assert(im2.channels == 1);
+	assert(im2.height == im1.height);
+	assert(im2.width == im2.width);
+	assert(im2.img);
+	assert(im1.img);
+
+	image out = {
+		im1.height,
+		im1.width,
+		im1.channels,
+		calloc(1, sizeof(uint8_t) * im1.height * im1.width * im1.channels)
+	};
+
+	for (size_t i = 0; i < im1.height * im1.width; ++i)
+	{
+		if (im2.img[i] < 128)
+		{
+			for (size_t c = 0; c < im1.channels; ++c)
+			{
+				size_t i1 = i * im1.channels + c;
+				out.img[i1] = im1.img[i1];
+			}
+		}
+	}
+
+	return out;
+}
+
 image make_grayscale(image source)
 {
 	image out = {
@@ -63,12 +93,18 @@ int main(int argc, char** argv)
 	// we will do nothing else other than use result.
 	bool is_brick = block_in_image(img, &mask);
 
+
+
 	if (is_brick)
 	{
 		printf("true\n");
 
 		lego_colour colour = detect_colour(img, mask);
-		
+
+		image masked = im_mask(img, mask);
+		debug_export(masked, "masked.png");
+		free(masked.img);
+
 		printf("Brick Colour: %s\n", colour.colour_name);
 
 		free(mask.img);
