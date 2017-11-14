@@ -69,8 +69,12 @@ extern "C" int debug_export(
 	image img,
 	const char* filename)
 {
+	// Create an OpenCV image with the same number of channels
+	// as in the source image
 	int type = CV_MAKETYPE(CV_8U, img.channels);
 	cv::Mat mat = cv::Mat(img.height, img.width, type, img.img);
+	// If we have 3 channels, swap the R and B channels as 
+	// otherwise yellow bricks become blue
 	if (img.channels == 3)
 		cv::cvtColor(mat, mat, CV_RGB2BGR);
 	cv::imwrite(filename, mat);
