@@ -38,7 +38,6 @@ Basic Approach:
 // Linux headers
 #include <unistd.h>
 #include <signal.h>
-#include <sys\types.h>
 
 #define MAX_UINT32_OUTPUT_SIZE 10
 
