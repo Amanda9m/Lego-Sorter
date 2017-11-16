@@ -21,3 +21,7 @@ Build Systems:
 
 Handling Image Numbers:
 		http://homepages.inf.ed.ac.uk/rbf/BOOKS/PHILLIPS/cips2ed.pdf
+
+Conveyor Belt:
+	Construction Reference:
+		http://www.instructables.com/id/DIY-Conveyor-belt/
