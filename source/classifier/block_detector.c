@@ -279,7 +279,6 @@ bool is_block(image source, image* block_mask)
 	assert(block_mask != NULL);
 
 	image sobel, edges;
-	int areEdges = 0;
 
 	if (sobel_filter(source, &sobel) != SOBEL_FILTER_SUCCESS)
 		// Optionally could return an error code here

@@ -18,12 +18,12 @@ typedef struct
 	int16_t norm;
 } filter_desc;
 
-int16_t kernelx[3][3] = {
+const int16_t kernelx[3][3] = {
 	{ -1, 0, 1 },
 	{ -2, 0, 2 },
 	{ -1, 0, 1 },
 };
-int16_t kernely[3][3] = {
+const int16_t kernely[3][3] = {
 	{ 1,  2,  1 },
 	{ 0,  0,  0 },
 	{ -1, -2, -1 },
