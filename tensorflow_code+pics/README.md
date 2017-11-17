@@ -19,7 +19,7 @@ for example
 
 python3 -m scripts.label_image \
 --graph=tf_files/retrained_graph.pb  \
---image=tf_files/Lego_blocks/rectangular_4x2/img_0013.jpg
+--image=tf_files/Lego_block_pictures/rectangular_4x2/img_0013.jpg
 
 to retrain, use:
 
