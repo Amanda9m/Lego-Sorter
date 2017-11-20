@@ -13,6 +13,7 @@
    2: Unable to allocate memory for the image
    -1: If an unknown error occurred.
 */
+
 int import_image(
 	const char* filename,
 	image* output);

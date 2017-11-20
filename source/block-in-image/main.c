@@ -1,4 +1,3 @@
-
 #include "pngimport.h"
 #include "block_detector.h"
 #include "colour_detector.h"
@@ -92,8 +91,6 @@ int main(int argc, char** argv)
 	// is a block in the image. Mask is unused because
 	// we will do nothing else other than use result.
 	bool is_brick = block_in_image(img, &mask);
-
-
 
 	if (is_brick)
 	{

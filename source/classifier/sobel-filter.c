@@ -1,4 +1,3 @@
-
 #include "opencv-sobel.h"
 
 #include <stdint.h>
@@ -126,7 +125,6 @@ void filter(
 #undef width
 #undef channels
 }
-
 
 sobel_filter_error_code sobel_filter(
 	const image source,

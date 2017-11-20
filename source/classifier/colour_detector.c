@@ -70,6 +70,7 @@ lego_colour detect_colour(image source, image block_mask) {
 
 	// source must have 3 channels (r, g, b)
 	assert(source.channels == 3);
+	
 	// block_mask must have 1 channel
 	assert(block_mask.channels == 1);
 
@@ -92,7 +93,7 @@ lego_colour detect_colour(image source, image block_mask) {
 
 	colour block = { (uint8_t)r, (uint8_t)g, (uint8_t)b };
 
-	// find closest lego colour based on directed line segment norms
+	// Find closest lego colour based on directed line segment norms
 	lego_colour known = find_nearest_colour(block);
 
 	return known;
