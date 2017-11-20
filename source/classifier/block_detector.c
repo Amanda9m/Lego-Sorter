@@ -1,4 +1,3 @@
-
 #include "opencv-sobel.h"
 #include "pngimport.h"
 
@@ -22,10 +21,12 @@ uint8_t* pixel_at_impl(image src, size_t x, size_t y, size_t c)
 // The image pixel value within the sobel filter
 // such that the pixel is considered an edge
 #define edge_threshold 64
+
 // The minimum distance the block must be away
 // from the edge for the block to be considered
 // a valid image to use
 #define min_edge_dist 16
+
 // The minimum number of block pixels for the image 
 // to be valid
 #define min_block_pixels 1000
@@ -58,6 +59,7 @@ queue make_queue(size_t size)
 
 	return q;
 }
+
 point make_point(size_t x, size_t y)
 {
 	point p = { x, y };
@@ -78,6 +80,7 @@ void queue_enqueue(queue* q, point pt)
 	if (q->end >= q->size)
 		q->end -= q->size;
 }
+
 point queue_dequeue(queue* q)
 {
 	assert(q != NULL);
@@ -92,6 +95,7 @@ point queue_dequeue(queue* q)
 
 	return pt;
 }
+
 bool queue_empty(queue* q)
 {
 	return q->end == q->start;
@@ -244,6 +248,7 @@ bool block_near_edge(image mask)
 
 	return false;
 }
+
 bool exists_mask_space(image mask, image edges, size_t blank_count)
 {
 	assert(mask.width == edges.width);
@@ -274,7 +279,7 @@ bool is_block(image source, image* block_mask)
 	// Source image must have a size
 	assert(source.width != 0 && source.height != 0);
 	// Source image must be greyscale
-	//assert(source.channels == 1);
+	// assert(source.channels == 1);
 	// For now, block_mask may not be null
 	assert(block_mask != NULL);
 
@@ -331,7 +336,7 @@ bool block_in_image(image source, image* block_mask)
 	assert(source.height != 0 && source.height != 0);
 
 	// block_in_image requires that the image be greyscale
-	//assert(source.channels == 1);
+	// assert(source.channels == 1);
 
 	// Require that the source image be a valid image.
 	assert(source.img != NULL);

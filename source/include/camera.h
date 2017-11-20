@@ -39,6 +39,7 @@ camera* create_camera(
 	uint32_t y_resolution,
 	uint32_t x_resolution);
 /* Destroys a previously created camera interface. */
+
 void destroy_camera(camera* cam);
 
 #endif
