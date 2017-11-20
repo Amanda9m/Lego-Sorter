@@ -54,7 +54,7 @@ struct camera
 
 static const char temp_name[] = "/camout.jpg";
 
-#define FRAMERATE 20
+#define FRAMERATE "20"
 
 // Command template for raspistill
 static const char command_template[] = "raspivid "
