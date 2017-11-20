@@ -45,7 +45,6 @@ struct camera
 {
 	// The PID of the raspistill process
 	pid_t pid;
-	FILE* stream;
 	// Note this is allocated using the same
 	// same memory as the camera struct
 	char* tmpdir;
@@ -54,17 +53,31 @@ struct camera
 };
 
 static const char temp_name[] = "/camout.jpg";
+
+#define FRAMERATE 20
+
 // Command template for raspistill
-static const char command_template[] = "raspistill " 
-	"-t 0 "         // Keep running forever
-	"-s "           // Enable signal mode (takes picture when receiving a signal)
-	"-n "           // Disable preview
-	"-vf "          // Vertical flip
-	"-ss 100000 "   // Set shutter speed to 0.1 ms
-	"-q 100 "       // Set JPEG quality to maximum
-	"-w %"PRIu32" " // Set image width to desired width  
-	"-h %"PRIu32" " // Set image height to desired height
-	"-o %s "        // Set output filename
+static const char command_template[] = "raspivid "
+	"-n "               // Disable preview
+	"-t 0 "             // No timeout
+	"-vf "              // Flip vertically
+	"-b 2000000 "       // bitrate of 20Mbit/s
+	"-fps "FRAMERATE" " // Record at 20 FPS
+	"-w %"PRIu32" "     // Set width
+	"-h %"PRIu32" "     // Set height
+	"-o - "             // Output to stdout
+	" | "
+	// gstreamer command
+	"gst-launch-1.0 fdsrc "
+	"! video/x-h264,framerate=25/1,stream-format=byte-stream "
+	"! decodebin "
+	"! videorate "
+	"! video/x-raw,framerate="FRAMERATE"/1 "
+	"! videoconvert "
+	"! jpegenc "
+	"! multifilesink location=%s "
+	// Run in the background
+	"&"
 ;
 
 
@@ -91,7 +104,7 @@ camera* create_camera(
 {
 	char filename[sizeof(temp_name) + 23] = "/tmp/lego-sort-XXXXXX";
 
-	size_t buflen = 22 + 2 * MAX_UINT32_OUTPUT_SIZE 
+	size_t buflen = sizeof(filename) + 2 * MAX_UINT32_OUTPUT_SIZE 
 		+ sizeof(command_template);
 
 	// Allocate memory for all buffers up front
@@ -121,24 +134,17 @@ camera* create_camera(
 		height, 
 		strcat(filename, temp_name));
 
-	cam->stream = popen(command, "r");
-
-	// Not entirely sure what to do if 
-	// command creation fails
-	assert(cam->stream);
+	system(command);
 	free(command);
 
-	cam->pid = get_pid("raspistill");
+	cam->pid = get_pid("raspivid");
 
 	// Take the first picture so that there
 	// is something there when take_picture
 	// is called for the first time.
 	
-	// Sleep for 1s so that raspistill can initialize 
-	usleep(1000000);
-
-	// Send signal so raspistill outputs an image
-	kill(cam->pid, SIGUSR1);
+	// Sleep for 0.1s so that raspivid can initialize 
+	usleep(100000);
 
 	return cam;
 }
@@ -147,8 +153,6 @@ void destroy_camera(camera* cam)
 	char cmdbuf[64] = "rm -rf ";
 	if (!cam)
 		return;
-
-	pclose(cam->stream);
 
 	// Kill raspistill (politely)
 	kill(cam->pid, SIGTERM);
@@ -176,15 +180,13 @@ camera_error_code take_picture(
 
 	strcat(strcpy(buffer, cam->tmpdir), temp_name);
 
+	// Grab whichever image is currently there
 	int ret = import_image(buffer, out);
 
 	if (ret == 1)
 		return CAMERA_ERR_OUT_OF_MEMORY;
 	else if (ret != 0)
 		return CAMERA_ERR_INTERNAL_ERROR;
-
-	// Send signal to raspistill to take another picture
-	kill(cam->pid, SIGUSR1);
 
 	return CAMERA_ERR_SUCCESS;
 }

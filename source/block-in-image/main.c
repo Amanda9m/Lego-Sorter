@@ -97,7 +97,7 @@ int main(int argc, char** argv)
 
 	if (is_brick)
 	{
-		printf("true\n");
+		printf("1\n");
 
 		lego_colour colour = detect_colour(img, mask);
 
@@ -105,13 +105,13 @@ int main(int argc, char** argv)
 		debug_export(masked, "masked.png");
 		free(masked.img);
 
-		printf("Brick Colour: %s\n", colour.colour_name);
+		//printf("Brick Colour: %s\n", colour.colour_name);
 
 		free(mask.img);
 	}
 	else
 	{
-		printf("false\n");
+		printf("0\n");
 	}
 
 	// Clean up all used resources
