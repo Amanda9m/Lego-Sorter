@@ -3,11 +3,11 @@
 
 typedef struct tensorflow_model tensorflow_model;
 
-struct output_class
+typedef struct output_class
 {
-	int classId;
+	uint32_t classId;
 	double probability;
-};
+} output_class;
 
 tensorflow_model* model_load(
 	const char* filename);

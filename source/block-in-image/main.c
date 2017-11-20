@@ -99,7 +99,7 @@ int main(int argc, char** argv)
 	{
 		printf("1\n");
 
-		lego_colour colour = detect_colour(img, mask);
+		lego_colour colour = detect_colour(img);
 
 		image masked = im_mask(img, mask);
 		debug_export(masked, "masked.png");
