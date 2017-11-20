@@ -1,8 +1,19 @@
 Stuff to code
-   - Brick Detection
-   - Brick Classification
+   - Brick Detection from tensor flow hopefully
+   - Brick Classification checkish
        - Colour
-       - Brick type
-   - Brick-set management
+       - Brick type GRAYSCALE ALL PICS IN THAT FILE
+	- 
+   - Brick-set management TODO (how entered)
+	-Brick existence and led flash
    - Control system
    - Brick-set downloader (Maybe)
+
+
+CURRENT TODO-S
+
+- Grayscale all pics in block classifier by type
+- re-run training
+- make sure classification can be run from the raspberry pi / program that
+- attach LED and program that
+- create some form of set infrastructure and attach it to light / tensor flow calls, figure out speed based on that
