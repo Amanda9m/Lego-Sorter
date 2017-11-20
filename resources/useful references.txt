@@ -22,6 +22,9 @@ Build Systems:
 Handling Image Numbers:
 		http://homepages.inf.ed.ac.uk/rbf/BOOKS/PHILLIPS/cips2ed.pdf
 
-Conveyor Belt:
-	Construction Reference:
+Hardware:
+	Conveyor Belt:
 		http://www.instructables.com/id/DIY-Conveyor-belt/
+	LED Connection:
+		https://thepihut.com/blogs/raspberry-pi-tutorials/27968772-turning-on-an-led-with-your-raspberry-pis-gpio-pins
+		https://www.hackster.io/windowsiot/rgb-led-sample-729ea7
