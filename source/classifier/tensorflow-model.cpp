@@ -34,7 +34,7 @@ extern "C" output_class model_run(
 	tensorflow_model* model, 
 	image img)
 {
-	assert(model && img);
+	assert(model);
 
 	int type = CV_MAKETYPE(CV_8U, img.channels);
 	cv::Mat mat = cv::Mat(img.height, img.width, type, img.img);
