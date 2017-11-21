@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -7,7 +6,7 @@
 #include "colour.h"
 #include "tensorflow-model.h"
 
-tensorflow_model* model = NULL;
+static tensorflow_model* model = NULL;
 
 #define MODEL_NAME "colour-model.pb"
 

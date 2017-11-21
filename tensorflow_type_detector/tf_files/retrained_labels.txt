@@ -1,5 +1,0 @@
-other
-rectangular 2x2
-rectangular 2x3
-rectangular 4x2
-thin 4x2
