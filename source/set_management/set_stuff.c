@@ -4,17 +4,11 @@
 #include "block_recognizer.h"
 #include "colour_detector.h"
 #include "pngimport.h"
+#include "set_management.h"
 
-typedef struct
-{
-	int length;
-	int width;
-	int thickness;
-	int colour;
-	int blocks_left;
-}blocks;
 
-int*[]  main (void)
+
+int main (void)
 {
 	char number_of_types[3];
 	int num = 0;
@@ -37,5 +31,5 @@ int*[]  main (void)
 	block_type type = recognize_block(img);
 	lego_colour colour = detect_colour(img);
 
-	return array;
+	return 0;
 }
