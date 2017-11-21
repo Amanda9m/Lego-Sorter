@@ -6,11 +6,11 @@ tensorflow_type_detector/.empty
 tensorflow_type_detector/retrained_graph.pb
 tensorflow_type_detector/retrained_labels.txt
 
-#tensorflow_color_detector/tf_files/bottlenecks
-#tensorflow_color_detector/tf_files/models
-#tensorflow_color_detector/.empty
-#tensorflow_color_detector/retrained_graph.pb
-#tensorflow_color_detector/retrained_labels.txt
+tensorflow_color_detector/tf_files/bottlenecks
+tensorflow_color_detector/tf_files/models
+tensorflow_color_detector/.empty
+tensorflow_color_detector/retrained_graph.pb
+tensorflow_color_detector/retrained_labels.txt
 
 tensorflow_type_detector/tf_files/bottlenecks
 tensorflow_type_detector/tf_files/models
