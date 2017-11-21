@@ -10,6 +10,7 @@
 
 static tensorflow_model* model = NULL;
 
+// Update this based on trained_model.txt
 block_type types[] = {
 	{ 2, 2, 3 }, // 2x2 thick
 	{ 2, 3, 3 }, // 2x3 thick
@@ -25,6 +26,14 @@ block_type types[] = {
 
 block_type recognize_block(image img)
 {
+	assert(img.channels * img.height * img.width != 0);
+	assert(img.img);
 
+	if (!model)
+		model = model_load(MODEL_NAME);
+
+	output_class out = model_run(model, img);
+
+	return types[out.classId];
 }
 
