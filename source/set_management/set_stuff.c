@@ -6,13 +6,13 @@
 #include "pngimport.h"
 #include "set_management.h"
 
+// get's input from user_input_document
 
-
-int main (void)
+struct * main (void)
 {
 	char number_of_types[3];
 	int num = 0;
-	//% a.out < user_input_document;
+	// ./a.out < user_input_document;
 	fgets(number_of_types, 3, stdin);
 	num = number_of_types[0] - 48; // To convert from ascii code to numeric value
 	blocks array[num];
@@ -28,8 +28,8 @@ int main (void)
 		array[i].blocks_left = block_enter[12] -48;
 	}
 	
-	block_type type = recognize_block(img);
-	lego_colour colour = detect_colour(img);
+	//block_type type = recognize_block(img);
+	//lego_colour colour = detect_colour(img);
 
-	return 0;
+	return array[0];
 }
