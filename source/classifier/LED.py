@@ -17,9 +17,15 @@ def inSet( clr ):
     GPIO.output(33, GPIO.LOW)
 
     if clr==1:
-       GPIO.output(33, GPIO.HIGH)
+        GPIO.output(29, GPIO.LOW)
+        GPIO.output(31, GPIO.LOW)
+        GPIO.output(33, GPIO.HIGH)
     elif clr==2:
         GPIO.output(29, GPIO.HIGH)
+        GPIO.output(31, GPIO.LOW)
+        GPIO.output(33, GPIO.LOW)
     else:
+        GPIO.output(29, GPIO.LOW)
         GPIO.output(31, GPIO.HIGH)
+        GPIO.output(33, GPIO.LOW)
     return;
