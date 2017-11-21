@@ -19,6 +19,8 @@ if (HAVE_HEADERS
 	AND HAVE_MKDTEMP)
 	
 	add_library(camera STATIC camera.c)
-
 	target_include_directories(camera PUBLIC ${CMAKE_CURRENT_LIST_DIR}/../include)
+else()
+	add_custom_target(camera SOURCES camera.c)
 endif()
+
