@@ -8,16 +8,16 @@
 
 static tensorflow_model* model = NULL;
 
-#define MODEL_NAME "colour-model.pb"
+#define MODEL_NAME "colour-detect.pb"
 
-lego_colour colours[10] = 
-{
+lego_colour colours[] = {
+	{ 0, "Black", { 0, 0, 0 } },
 	{ 0, "Blue",  { 0, 0, 255 } },
 	{ 0, "Green", { 0, 255, 0 } },
-	{ 0, "Red",   { 255, 0, 0 } },
 	{ 0, "Gray",  { 128, 128, 128 } },
-	{ 0, "Black", { 0, 0, 0 } },
-	{ 0, "White", { 255, 255, 255 } }
+	{ 0, "Red",   { 255, 0, 0 } },
+	{ 0, "White", { 255, 255, 255 } },
+	{ 0, "Yellow",{ 255, 255, 0 } }
 };
 
 void init_colour_model()
