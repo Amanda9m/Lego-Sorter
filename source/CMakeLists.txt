@@ -17,3 +17,14 @@ add_subdirectory(camera)
 
 # Add the headers so that they can be edited more easily
 add_subdirectory(include)
+
+# Copy trained tf files to output directory
+add_custom_target(copy_tf_color_detect ALL
+	COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/../tensorflow_color_detector/tf_files/retrained_graph.pb ${CMAKE_CURRENT_BINARY_DIR}/colour-detect.pb
+)
+add_custom_target(copy_tf_block_detect ALL
+	COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/../tensorflow_detect_block/tf_files/retrained_graph.pb ${CMAKE_CURRENT_BINARY_DIR}/block-detect.pb
+)
+add_custom_target(copy_tf_type_detect ALL
+	COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_LIST_DIR}/../tensorflow_type_detector/tf_files/retrained_graph.pb ${CMAKE_CURRENT_BINARY_DIR}/type-detect.pb
+)
