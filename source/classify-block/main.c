@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	image img, mask;
+	image img;
 	if (import_image(argv[1], &img) != 0)
 	{
 		printf("Error importing image.\n");
@@ -26,7 +26,7 @@ int main(int argc, char** argv)
 
 	image gray = grayscaled_image(img);
 
-	if (!block_in_image(img, &mask))
+	if (!block_in_image(gray))
 	{
 		printf("No block found in image!\n");
 		return 0;

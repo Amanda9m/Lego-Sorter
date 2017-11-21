@@ -9,6 +9,7 @@ extern "C" {
 #include "opencv2/imgproc.hpp"
 
 #include <cassert>
+#include <cstdio>
 
 struct tensorflow_model
 {
@@ -19,9 +20,16 @@ extern "C" tensorflow_model* model_load(
 	const char* filename)
 {
 	tensorflow_model* model = new tensorflow_model;
+	try {
 
-	model->net = cv::dnn::readNetFromTensorflow(filename);
-
+		model->net = cv::dnn::readNetFromTensorflow(filename);
+	}
+	catch (cv::Exception& e)
+	{
+		printf("%s", e.what());
+		assert(false);
+		std::terminate();
+	}
 	return model;
 }
 extern "C" void model_free(

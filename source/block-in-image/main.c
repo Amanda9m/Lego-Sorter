@@ -90,7 +90,7 @@ int main(int argc, char** argv)
 	// Use block_in_image to determine whether there 
 	// is a block in the image. Mask is unused because
 	// we will do nothing else other than use result.
-	bool is_brick = block_in_image(img);
+	bool is_brick = block_in_image(greyscale);
 
 	if (is_brick)
 	{
