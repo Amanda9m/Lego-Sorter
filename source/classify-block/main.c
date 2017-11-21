@@ -3,8 +3,10 @@
 #include "block_recognizer.h"
 #include "colour_detector.h"
 #include "pngimport.h"
+#include "image.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <inttypes.h>
 
 int main(int argc, char** argv)
@@ -15,20 +17,22 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	image img, mask;
+	image img;
 	if (import_image(argv[1], &img) != 0)
 	{
 		printf("Error importing image.\n");
 		return 2;
 	}
 
-	if (!block_in_image(img, &mask))
+	image gray = grayscaled_image(img);
+
+	if (!block_in_image(gray))
 	{
 		printf("No block found in image!\n");
 		return 0;
 	}
 
-	block_type type = recognize_block(img);
+	block_type type = recognize_block(gray);
 	lego_colour colour = detect_colour(img);
 
 	printf("Block Detected!\n"
@@ -38,6 +42,9 @@ int main(int argc, char** argv)
 		type.width,
 		type.thickness,
 		colour.colour_name);
+
+	free(img.img);
+	free(gray.img);
 
 	return 0;
 }

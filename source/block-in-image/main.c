@@ -72,7 +72,7 @@ int main(int argc, char** argv)
 		return 1;
 	}
 
-	image img, greyscale, mask = { .img = NULL };
+	image img, greyscale;
 
 	// Load the given image off disk
 	int err = import_image(argv[1], &img);
@@ -90,21 +90,14 @@ int main(int argc, char** argv)
 	// Use block_in_image to determine whether there 
 	// is a block in the image. Mask is unused because
 	// we will do nothing else other than use result.
-	bool is_brick = block_in_image(img, &mask);
+	bool is_brick = block_in_image(greyscale);
 
 	if (is_brick)
 	{
 		printf("1\n");
 
-		lego_colour colour = detect_colour(img);
-
-		image masked = im_mask(img, mask);
-		debug_export(masked, "masked.png");
-		free(masked.img);
-
+		//lego_colour colour = detect_colour(img);
 		//printf("Brick Colour: %s\n", colour.colour_name);
-
-		free(mask.img);
 	}
 	else
 	{
