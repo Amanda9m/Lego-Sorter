@@ -4,16 +4,19 @@ tensorflow_type_detector/tf_files/bottlenecks/
 tensorflow_type_detector/tf_files/models/
 tensorflow_type_detector/tf_files/.empty
 tensorflow_type_detector/tf_files/training_summaries/
+tensorflow_type_detector/scripts/__pycache__/
 
 tensorflow_color_detector/tf_files/bottlenecks/
 tensorflow_color_detector/tf_files/models/
 tensorflow_color_detector/tf_files/.empty
 tensorflow_color_detector/tf_files/training_summaries/
+tensorflow_type_detector/scripts/__pycache__/
 
 tensorflow_detect_block/tf_files/bottlenecks/
 tensorflow_detect_block/tf_files/models/
 tensorflow_detect_block/tf_files/.empty
 tensorflow_detect_block/tf_files/training_summaries/
+tensorflow_type_detector/scripts/__pycache__/
 
 *.pyc
 
