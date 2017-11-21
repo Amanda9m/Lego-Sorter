@@ -326,14 +326,21 @@ bool is_block(image source, image* block_mask)
 	return result;
 }
 
+#include "tensorflow-model.h"
+
+#define MODEL_NAME "block-detect.pb"
+#define BLOCK_ID 0
+
+static tensorflow_model* model = NULL;
+
 // Method stub for block_in_image
-bool block_in_image(image source, image* block_mask)
+bool block_in_image(image source)
 {
 	// It doesn't really make sense to check if there is 
 	// a block in an empty image. Just returning false 
 	// is an option, but for now this method will just
 	// assert to ensure that the image isn't empty.
-	assert(source.height != 0 && source.height != 0);
+	assert(source.height != 0 && source.width != 0);
 
 	// block_in_image requires that the image be greyscale
 	// assert(source.channels == 1);
@@ -341,14 +348,10 @@ bool block_in_image(image source, image* block_mask)
 	// Require that the source image be a valid image.
 	assert(source.img != NULL);
 
-	// TEMPORARY: Make block_mask an empty image
-	// This should make any function that is then
-	// called with block_mask assert because it
-	// isn't a valid image.
-	block_mask->height = 0;
-	block_mask->width = 0;
-	block_mask->channels = 0;
-	block_mask->img = NULL;
+	if (!model)
+		model = model_load(MODEL_NAME);
 
-	return is_block(source, block_mask);
+	output_class output = model_run(model, source);
+
+	return output.classId == BLOCK_ID;
 }
