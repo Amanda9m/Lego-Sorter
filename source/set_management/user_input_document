@@ -1,0 +1,18 @@
+4
+4, 4, 1, 1, 3
+6, 1, 3, 2, 2
+2, 2, 3, 3, 1
+4, 2, 3, 4, 2
+
+
+// Input blocks to find in a list length, width, thickness, color, number of blocks of that type
+// Thin blocks have a thickness 1, thick blocks have a thickness 3
+// For instance, input: 6, 1, 1, yellow, 3 would give 3 thin 6x1 blocks.
+// lookup table for colors:
+red: 1
+yellow:2
+green: 3
+blue: 4
+white: 5
+grey: 6
+black: 7
