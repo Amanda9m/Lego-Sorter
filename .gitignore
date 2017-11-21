@@ -1,13 +1,13 @@
 *.DS_store
 
-#tensorflow_type_detector/tf_files/bottlenecks
-#tensorflow_type_detector/tf_files/models
-#tensorflow_type_detector/.empty
-#tensorflow_type_detector/retrained_graph.pb
-#tensorflow_type_detector/retrained_labels.txt
-#
-#tensorflow_colour_detector/tf_files/bottlenecks
-#tensorflow_colour_detector/tf_files/models
-#tensorflow_colour_detector/.empty
-#tensorflow_colour_detector/retrained_graph.pb
-#tensorflow_colour_detector/retrained_labels.txt
+tensorflow_type_detector/tf_files/bottlenecks
+tensorflow_type_detector/tf_files/models
+tensorflow_type_detector/.empty
+tensorflow_type_detector/retrained_graph.pb
+tensorflow_type_detector/retrained_labels.txt
+
+tensorflow_colour_detector/tf_files/bottlenecks
+tensorflow_colour_detector/tf_files/models
+tensorflow_colour_detector/.empty
+tensorflow_colour_detector/retrained_graph.pb
+tensorflow_colour_detector/retrained_labels.txt
