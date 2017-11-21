@@ -1,4 +1,3 @@
-
 #include "pngimport.h"
 #include "block_detector.h"
 #include "colour_detector.h"
@@ -93,13 +92,11 @@ int main(int argc, char** argv)
 	// we will do nothing else other than use result.
 	bool is_brick = block_in_image(img, &mask);
 
-
-
 	if (is_brick)
 	{
 		printf("1\n");
 
-		lego_colour colour = detect_colour(img, mask);
+		lego_colour colour = detect_colour(img);
 
 		image masked = im_mask(img, mask);
 		debug_export(masked, "masked.png");

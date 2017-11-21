@@ -12,6 +12,7 @@ find_package(OpenCV REQUIRED)
 # Add all the sub projects to the main project
 add_subdirectory(classifier)
 add_subdirectory(block-in-image)
+add_subdirectory(classify-block)
 add_subdirectory(camera)
 
 # Add the headers so that they can be edited more easily
