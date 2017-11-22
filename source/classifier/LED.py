@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import sys
 
 # When calling the function:
 #  Let 1 indicate the block is in the set
@@ -31,3 +32,5 @@ def inSet( clr ):
     GPIO.output(33, GPIO.LOW)
     GPIO.cleanup()
     return;
+
+inSet(int(sys.argv[1]))
