@@ -11,10 +11,6 @@ def inSet( clr ):
     GPIO.setup(29, GPIO.OUT)
     GPIO.setup(31, GPIO.OUT)
     GPIO.setup(33, GPIO.OUT)
-    
-    GPIO.output(29, GPIO.LOW)
-    GPIO.output(31, GPIO.LOW)
-    GPIO.output(33, GPIO.LOW)
 
     if clr==1:
         GPIO.output(29, GPIO.LOW)
@@ -28,4 +24,10 @@ def inSet( clr ):
         GPIO.output(29, GPIO.LOW)
         GPIO.output(31, GPIO.HIGH)
         GPIO.output(33, GPIO.LOW)
+
+    
+    GPIO.output(29, GPIO.LOW)
+    GPIO.output(31, GPIO.LOW)
+    GPIO.output(33, GPIO.LOW)
+    GPIO.cleanup()
     return;
