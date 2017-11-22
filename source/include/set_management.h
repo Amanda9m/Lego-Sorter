@@ -22,6 +22,6 @@ typedef struct{
     blocks * array; //call the array by calling (for instance) myset.array[i].length
 } set;
 
-set main (void); //input: nothing, output: struct set, including array and its size
+set set_management(); //input: nothing, output: struct set, including array and its size
 
 #endif
