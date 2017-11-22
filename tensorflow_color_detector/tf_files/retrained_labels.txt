@@ -1,7 +1,7 @@
-black
-blue
-green
 light gray
+green
 red
 white
+black
+blue
 yellow

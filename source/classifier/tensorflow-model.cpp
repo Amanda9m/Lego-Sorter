@@ -24,7 +24,7 @@ extern "C" tensorflow_model* model_load(
 
 		model->net = cv::dnn::readNetFromTensorflow(filename);
 	}
-	catch (cv::Exception& e)
+	catch (std::exception& e)
 	{
 		printf("%s", e.what());
 		assert(false);

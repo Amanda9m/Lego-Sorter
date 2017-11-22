@@ -1,0 +1,26 @@
+#!/bin/bash
+
+ARCHITECTURE=mobilenet_1.0_224
+
+python3 -m scripts.retrain  \
+	--bottleneck_dir=tf_files/bottlenecks \
+	--model_dir=tf_files/models/$ARCHITECTURE \
+	--summaries_dir=tf_files/training_summaries/$ARCHITECTURE \
+	--output_graph=tf_files/out1_graph.pb \
+	--output_labels=tf_files/retrained_labels.txt \
+	--architecture=$ARCHITECTURE \
+	--image_dir=tf_files/Lego_block_pictures
+	
+/mnt/e/tmp/tensorflow/bazel-bin/tensorflow/tools/graph_transforms/transform_graph \
+	--in_graph="tf_files/out1_graph.pb" \
+	--out_graph=tf_files/out3_graph.pb \
+	--inputs="input" \
+	--outputs="final_result" \
+	--transforms="fold_constants sort_by_execution_order remove_nodes(op=Sqeeze)"
+	
+python3 -m tensorflow.python.tools.optimize_for_inference \
+	--input  tf_files/out3_graph.pb \
+	--output tf_files/retrained_graph.pb \
+	--input_names input \
+	--output_names final_result
+
