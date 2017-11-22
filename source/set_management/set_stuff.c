@@ -1,22 +1,24 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "block_detector.h"
 #include "block_recognizer.h"
 #include "colour_detector.h"
-#include "pngimport.h"
+#include "pngimport.h" 
 #include "set_management.h"
 
-// get's input from user_input_document
+// gets input from user_input
 
-struct * main (void)
-{
+set main (void)
+{ 
 	char number_of_types[3];
 	int num = 0;
-	// ./a.out < user_input_document;
+	// ./a.out < user_input.txt;
 	fgets(number_of_types, 3, stdin);
 	num = number_of_types[0] - 48; // To convert from ascii code to numeric value
-	blocks array[num];
+	blocks * array = malloc (num * sizeof(blocks));
 	char block_enter[15];
+	array[3].length = 1;
 
 	for(int i = 0; i < num; i ++)
 	{
@@ -27,9 +29,9 @@ struct * main (void)
 		array[i].colour = block_enter[9] -48;
 		array[i].blocks_left = block_enter[12] -48;
 	}
-	
-	//block_type type = recognize_block(img);
-	//lego_colour colour = detect_colour(img);
 
-	return array[0];
+	set myset;
+	myset.size = num;
+	myset.array = array;
+	return (myset);
 }
