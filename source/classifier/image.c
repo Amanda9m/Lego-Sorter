@@ -1,10 +1,13 @@
-
 #include "image.h"
 
 #include <assert.h>
 #include <stdlib.h>
 
-static uint8_t* pixel_at_impl(image src, size_t x, size_t y, size_t c)
+static uint8_t* pixel_at_impl(
+	image src, 
+	size_t x, 
+	size_t y, 
+	size_t c)
 {
 	assert(x < src.width);
 	assert(y < src.height);

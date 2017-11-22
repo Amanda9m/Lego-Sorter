@@ -1,9 +1,9 @@
+#include <assert.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <assert.h>
 
-#include "image.h"
 #include "colour.h"
+#include "image.h"
 #include "tensorflow-model.h"
 
 static tensorflow_model* model = NULL;

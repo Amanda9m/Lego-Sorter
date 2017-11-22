@@ -2,11 +2,10 @@
 #include "pngimport.h"
 #include "tensorflow-model.h"
 
+#include <assert.h>
 #include <stdbool.h>
 #include <stdlib.h>
-#include <assert.h>
 #include <string.h>
-
 
 #define MODEL_NAME "block-detect.pb"
 #define BLOCK_ID 0
@@ -16,10 +15,10 @@ static tensorflow_model* model = NULL;
 // Method stub for block_in_image
 bool block_in_image(image source)
 {
-	// It doesn't really make sense to check if there is 
-	// a block in an empty image. Just returning false 
-	// is an option, but for now this method will just
-	// assert to ensure that the image isn't empty.
+	/* It doesn't really make sense to check if there is a block in an empty image.
+	   Just returning false is an option, but for now this method will just
+	     assert to ensure that the image isn't empty.
+	*/
 	assert(source.height != 0 && source.width != 0);
 
 	// block_in_image requires that the image be greyscale

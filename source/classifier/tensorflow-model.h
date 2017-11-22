@@ -1,4 +1,3 @@
-
 #include "image.h"
 
 typedef struct tensorflow_model tensorflow_model;

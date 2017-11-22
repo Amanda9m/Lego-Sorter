@@ -1,11 +1,12 @@
 #ifndef SET_MANAGEMENT_H
 #define SET_MANAGEMENT_H
 
+#include "image.h"
 #include <stdbool.h>
 
-#include "image.h"
-
 //The struct which returns the various properties of a block
+
+
 typedef struct
 {
 	int length;
