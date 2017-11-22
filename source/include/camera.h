@@ -38,8 +38,8 @@ camera_error_code take_picture(
 camera* create_camera(
 	uint32_t y_resolution,
 	uint32_t x_resolution);
-/* Destroys a previously created camera interface. */
 
+// Destroys a previously created camera interface.
 void destroy_camera(camera* cam);
 
 #endif

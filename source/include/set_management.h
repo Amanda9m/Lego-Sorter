@@ -1,9 +1,9 @@
 #ifndef SET_MANAGEMENT_H
 #define SET_MANAGEMENT_H
 
-#include <stdbool.h>
-
 #include "image.h"
+
+#include <stdbool.h>
 
 typedef struct
 {

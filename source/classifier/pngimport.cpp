@@ -51,7 +51,7 @@ extern "C" int import_image(
 	}
 	catch (...)
 	{
-		// If there was an error cleanup to ensure as few 
+		// If there was an error, cleanup to ensure as few 
 		// memory leaks as possible.
 		free(output->img);
 

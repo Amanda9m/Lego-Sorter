@@ -1,9 +1,9 @@
 #include "opencv-sobel.h"
 
+#include <assert.h>
+#include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <stddef.h>
-#include <assert.h>
 
 #define FILTER_SIZE 3
 #define OFFSET (FILTER_SIZE/2)

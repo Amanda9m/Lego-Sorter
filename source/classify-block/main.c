@@ -1,13 +1,12 @@
-
 #include "block_detector.h"
 #include "block_recognizer.h"
 #include "colour_detector.h"
 #include "pngimport.h"
 #include "image.h"
 
+#include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <inttypes.h>
 
 int main(int argc, char** argv)
 {

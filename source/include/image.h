@@ -11,7 +11,7 @@ typedef struct
     uint8_t* img;
 } image;
 
-/* Creates a grayscaled image from a given source image */
+// Create a grayscaled image from a given source image
 image grayscaled_image(image in);
 
 #endif

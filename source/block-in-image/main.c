@@ -1,10 +1,10 @@
-#include "pngimport.h"
 #include "block_detector.h"
 #include "colour_detector.h"
+#include "pngimport.h"
 
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 image im_mask(const image im1, const image im2)
 {
@@ -58,7 +58,6 @@ image make_grayscale(image source)
 	return out;
 }
 
-
 // Use a form of main that takes command line arguments
 int main(int argc, char** argv)
 {
@@ -77,7 +76,7 @@ int main(int argc, char** argv)
 	// Load the given image off disk
 	int err = import_image(argv[1], &img);
 
-	// Check to see if an error occurred while 
+	// Check to see if an error occurred while
 	// loading the image off of disk
 	if (err != 0)
 	{
@@ -87,9 +86,8 @@ int main(int argc, char** argv)
 
 	greyscale = make_grayscale(img);
 
-	// Use block_in_image to determine whether there 
-	// is a block in the image. Mask is unused because
-	// we will do nothing else other than use result.
+	// Use block_in_image to determine whether there is a block in the image.
+	// Mask is unused because we will do nothing else other than use result.
 	bool is_brick = block_in_image(greyscale);
 
 	if (is_brick)

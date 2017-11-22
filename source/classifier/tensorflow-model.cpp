@@ -1,10 +1,9 @@
-
 extern "C" {
 #include "tensorflow-model.h"
 }
 
-#include "opencv2/dnn.hpp"
 #include "opencv2/core.hpp"
+#include "opencv2/dnn.hpp"
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
 
@@ -30,8 +29,10 @@ extern "C" tensorflow_model* model_load(
 		assert(false);
 		std::terminate();
 	}
+	
 	return model;
 }
+
 extern "C" void model_free(
 	tensorflow_model* model)
 {
