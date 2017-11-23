@@ -110,10 +110,13 @@ camera* create_camera(
 	char* command = malloc(buflen);
 	char* tmpdir = (char*)(cam + 1);
 
+	printf("Step 1\n");
+
 	if (!cam || !command)
 	{
 		free(cam);
 		free(command);
+		assert(cam && command);
 		return NULL;
 	}
 
@@ -123,6 +126,8 @@ camera* create_camera(
 	// Create a temporary directory to store the output
 	mkdtemp(filename);
 	cam->tmpdir = strcpy(tmpdir, filename);
+
+	printf("Step 2\n");
 
 	snprintf(
 		command,
@@ -134,6 +139,8 @@ camera* create_camera(
 
 	system(command);
 	free(command);
+
+	printf("Step 3");
 
 	cam->pid = get_pid("raspivid");
 
