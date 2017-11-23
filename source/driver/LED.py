@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import sys
+import time
 
 # When calling the function:
 #  Let 1 indicate the block is in the set
@@ -29,7 +30,7 @@ def inSet( clr ):
         GPIO.output(6, GPIO.HIGH)
         GPIO.output(13, GPIO.LOW)
 
-    
+    time.sleep(1)
     GPIO.output(5, GPIO.LOW)
     GPIO.output(6, GPIO.LOW)
     GPIO.output(13, GPIO.LOW)
