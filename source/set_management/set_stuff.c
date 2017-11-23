@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "block_detector.h"
 #include "block_recognizer.h"
@@ -29,6 +30,12 @@ set set_management (void)
 	FILE *input;
 
 	input = fopen("user_input", "r");
+
+	if (!input)
+	{
+		printf("User input not found!\n");
+		assert(input);
+	}
 
 	int num = 0;
 	// ./a.out < user_input.txt;
