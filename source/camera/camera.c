@@ -1,4 +1,3 @@
-
 #include "camera.h"
 #include "pngimport.h"
 
@@ -12,7 +11,7 @@ Basic Approach:
   all of the internet.
 
   Anyway, the way this code works is it starts an
-  instance of raspistill in signal mode. That is
+  instance of raspistill in signal mode. That is,
   raspistill waits to receive a signal then takes
   a picture. So we just set raspistill to write 
   to a known location every time then read it out.
@@ -45,8 +44,8 @@ struct camera
 {
 	// The PID of the raspistill process
 	pid_t pid;
-	// Note this is allocated using the same
-	// same memory as the camera struct
+	
+	// Note this is allocated using the same memory as the camera struct
 	char* tmpdir;
 	uint32_t width;
 	uint32_t height;
@@ -79,7 +78,6 @@ static const char command_template[] = "raspivid "
 	// Run in the background
 	"&"
 ;
-
 
 
 /* Uses the pidof program to find the PID of the given program */

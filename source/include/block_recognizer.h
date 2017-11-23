@@ -1,7 +1,6 @@
+#include "image.h"
 
 #include <stdint.h>
-
-#include "image.h"
 
 typedef struct block_type
 {

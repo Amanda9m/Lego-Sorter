@@ -1,10 +1,8 @@
-
 #include "block_recognizer.h"
-
-#include <stdlib.h>
-#include <assert.h>
-
 #include "tensorflow-model.h"
+
+#include <assert.h>
+#include <stdlib.h>
 
 #define MODEL_NAME "block-model.pb"
 
