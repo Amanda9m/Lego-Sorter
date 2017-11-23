@@ -27,12 +27,14 @@ int main (int argc, char** argv)
 {
 	set myset = set_management();
 	camera* cam = create_camera(224, 224);
+	printf("Camera done");
 	bool blocks_are_left = true;
 	while(blocks_are_left)
 	{
 		// Should load the given image off of disk
 		image source_img;
 		take_picture(cam, &source_img);
+		printf("took picture");
 		
 		if(block_in_image(source_img));
 		{
