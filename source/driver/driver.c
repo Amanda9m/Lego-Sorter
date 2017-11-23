@@ -36,7 +36,8 @@ int main (void)
 		{
             image img2 = resize_image(source_img, 224, 224);
             image gray = grayscaled_image(img2);
-			block_type type = recognize_block(gray); //grayscale it and size it properly like classify
+            
+			block_type type = recognize_block(gray);
 			lego_colour colour = detect_colour(img2);
 			for(int i = 0; i < myset.size; i++)
 			{
