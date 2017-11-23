@@ -46,6 +46,8 @@ int main (int argc, char** argv)
 		{
 			fprintf(stderr, "Found Block\n");
             
+			block_type type = recognize_block(gray);
+			lego_colour colour = detect_colour(img2);
 			for(int i = 0; i < myset.size; i++)
 			{
 				if(myset.array[i].blocks_left > 0)
