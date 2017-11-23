@@ -13,7 +13,7 @@
 
 int main (void)
 {
-	array = set_management(user_input_document); //this is not at all how i call this and i'm not sure i'll get it, need to work on getting this array.
+	set myset = set_management();
 	bool blocks_are_left = true;
 	while(blocks_are_left)
 	{
@@ -25,16 +25,16 @@ int main (void)
 		{
 			block_type type = recognize_block(gray);
 			lego_colour colour = detect_colour(img); //make this mean colour id as in my look up table or change my lookup table to right ids
-			for(int i = 0; i < n; i++) //need to get n from array, need to output that from function too oopssssss MAKE THAT HAPPEN
+			for(int i = 0; i < myset.size; i++)
 			{
-				if(array[i].blocks_left > 0)
+				if(myset.array[i].blocks_left > 0)
 				{
-					if(array[i].length == type.length && array[i].width == type.width
-						&& array[i].thickness == type.thickness && array[i].colour == colour)
+					if(myset.array[i].length == type.length && myset.array[i].width == type.width
+						&& myset.array[i].thickness == type.thickness && myset.array[i].colour == colour.lego_id)
 					{
 						inSet(1)//turn green light on
 						// wait 3 seconds???
-						array[i].blocks_left --;
+						myset.array[i].blocks_left --;
 						i = n;
 					}
 				}
