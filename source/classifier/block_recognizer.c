@@ -10,7 +10,7 @@ static tensorflow_model* model = NULL;
 
 // Update this based on trained_model.txt
 block_type types[] = {
-	]6] = { 0, 0, 0 }, // Other
+	[6] = { 0, 0, 0 }, // Other
 	[5] = { 2, 2, 1 }, // 2x2 thin
 	[0] = { 2, 3, 3 }, // 2x3 thick
 	[8] = { 1, 4, 3 }, // 1x4 thick
