@@ -48,7 +48,7 @@ int main (void)
 						inSet(1);//turn green light on
 						// wait 3 seconds???
 						myset.array[i].blocks_left --;
-						i = n;
+						i = myset.size;
 					}
 				}
 			}
