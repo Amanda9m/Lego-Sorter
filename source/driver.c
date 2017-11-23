@@ -1,10 +1,13 @@
 #include <stdio.h>
+#include <python2.7/Python.h>
 
 #include "block_detector.h"
 #include "block_recognizer.h"
 #include "colour_detector.h"
+#include "image.h"
 #include "pngimport.h"
 #include "set_management.h"
+#include "LED.py"
 
 // this is the driver which is to be run over and over again until the list is full or we stop
 
@@ -14,7 +17,10 @@ int main (void)
 	bool blocks_are_left = true;
 	while(blocks_are_left)
 	{
-		image source_img = //call image from camera
+		// Should load the given image off of disk
+		image source_img;
+		int err = import_image(argv[1], &source_img);
+		
 		if(block_in_image(source_img))
 		{
 			block_type type = recognize_block(gray);

@@ -5,29 +5,45 @@
 #include "block_recognizer.h"
 #include "colour_detector.h"
 #include "pngimport.h" 
-#include "set_management.h"
+#include "set_management.h" 
 
 // gets input from user_input
+/*
+typedef struct
+{
+	int length;
+	int width;
+	int thickness;
+	int colour;
+	int blocks_left;
+}blocks;
 
-set main (void)
+//the return struct from the main function, returning the size of the array, and the array itself (which is an array of block types)
+typedef struct{
+    int size;
+    blocks * array; //call the array by calling (for instance) myset.array[i].length
+} set; */
+
+set set_management (void)
 { 
-	char number_of_types[3];
+	FILE *input;
+
+	input = fopen("user_input", "r");
+
 	int num = 0;
 	// ./a.out < user_input.txt;
-	fgets(number_of_types, 3, stdin);
-	num = number_of_types[0] - 48; // To convert from ascii code to numeric value
+	fscanf(input, "%d", &num);
+
 	blocks * array = malloc (num * sizeof(blocks));
-	char block_enter[15];
-	array[3].length = 1;
 
 	for(int i = 0; i < num; i ++)
 	{
-		fgets(block_enter, 15, stdin);
-		array[i].length = block_enter[0] - 48;
-		array[i].width = block_enter[3] -48;
-		array[i].thickness = block_enter[6] -48;
-		array[i].colour = block_enter[9] -48;
-		array[i].blocks_left = block_enter[12] -48;
+		fscanf(input, "%d, %d, %d, %d, %d", &array[i].length, &array[i].width, &array[i].thickness, &array[i].colour, &array[i].blocks_left);
+		/*array[i].length = size[0] - 48;
+		array[i].width = size[3] -48;
+		array[i].thickness = size[6] -48;
+		array[i].colour = size[9] -48;
+		array[i].blocks_left = size[12] -48; */
 	}
 
 	set myset;
