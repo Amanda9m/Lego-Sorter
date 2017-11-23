@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <python2.7/Python.h>
 
 #include "block_detector.h"
 #include "block_recognizer.h"
@@ -6,6 +7,7 @@
 #include "image.h"
 #include "pngimport.h"
 #include "set_management.h"
+#include "LED.py"
 
 // this is the driver which is to be run over and over again until the list is full or we stop
 
