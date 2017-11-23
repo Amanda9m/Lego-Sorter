@@ -38,6 +38,8 @@ int main (int argc, char** argv)
 		
 		if(source_img.height != 0 
 			&& source_img.width != 0
+			&& source_img.channels != 0
+			&& source_img.img != NULL
 			&& block_in_image(source_img));
 		{
 			fprintf(stderr, "Found Block\n");
@@ -63,6 +65,10 @@ int main (int argc, char** argv)
 				}
 			}
 		}
+
+		free(source_img.img);
+		source_img.height = 0;
+		source_img.img = NULL;
 	}
 
 	destroy_camera(cam);
