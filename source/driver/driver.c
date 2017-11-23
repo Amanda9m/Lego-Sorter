@@ -57,7 +57,7 @@ int main (int argc, char** argv)
 						&& myset.array[i].thickness == type.thickness
 						&& myset.array[i].colour == colour.lego_id)
 					{
-						inSet(1);//turn green light on
+						inSet(1);//turn blue light on
 						// wait 3 seconds???
 						myset.array[i].blocks_left --;
 						i = myset.size;

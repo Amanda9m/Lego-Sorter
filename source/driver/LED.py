@@ -14,7 +14,7 @@ def inSet( clr ):
     GPIO.setup(13, GPIO.OUT)
 
     if clr==1:
-        # Turn the LED green
+        # Turn the LED blue
         GPIO.output(5, GPIO.LOW)
         GPIO.output(6, GPIO.LOW)
         GPIO.output(13, GPIO.HIGH)
@@ -24,7 +24,7 @@ def inSet( clr ):
         GPIO.output(6, GPIO.LOW)
         GPIO.output(13, GPIO.LOW)
     else:
-        # Default: turn the LED blue if input was recieved but invalid
+        # Default: turn the LED green if input was recieved but invalid
         GPIO.output(5, GPIO.LOW)
         GPIO.output(6, GPIO.HIGH)
         GPIO.output(13, GPIO.LOW)
