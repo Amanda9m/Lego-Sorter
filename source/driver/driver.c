@@ -34,6 +34,7 @@ int main (int argc, char** argv)
 		
 		if(block_in_image(source_img));
 		{
+			fprintf(stderr, "Found Block\n");
             image img2 = resize_image(source_img, 224, 224);
             image gray = grayscaled_image(img2);
             
