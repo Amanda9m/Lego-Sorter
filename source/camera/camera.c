@@ -140,7 +140,7 @@ camera* create_camera(
 	system(command);
 	free(command);
 
-	printf("Step 3");
+	printf("Step 3\n");
 
 	cam->pid = get_pid("raspivid");
 
