@@ -87,13 +87,13 @@ extern "C" image resize_image(
 	uint32_t nwidth,
 	uint32_t nheight)
 {
-	printf("%d %d\n", (int)nwidth, (int)nheight);
+	printf("%d %d\n", (int)img.height, (int)img.width);
 
 	int type = CV_MAKETYPE(CV_8U, img.channels);
 	cv::Mat mat = cv::Mat(img.height, img.width, type, img.img);
-	cv::Mat outmat = cv::Mat(nheight, nwidth, type);
+	cv::Mat outmat = cv::Mat(224, 224, type);
 
-	cv::resize(mat, outmat, cv::Size((int)nwidth, (int)nheight));
+	cv::resize(mat, outmat, cv::Size((int)224, (int)224));
 
 	image out = {
 		nheight,

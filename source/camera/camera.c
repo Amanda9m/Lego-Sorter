@@ -149,7 +149,7 @@ camera* create_camera(
 	// is called for the first time.
 	
 	// Sleep for 0.1s so that raspivid can initialize 
-	usleep(100000);
+	usleep(1000000);
 
 	return cam;
 }
