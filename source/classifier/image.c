@@ -24,7 +24,7 @@ image grayscaled_image(image in)
 	image out = {
 		.height   = in.height,
 		.width    = in.width,
-		.channels = 1,
+		.channels = in.channels,
 		.img      = NULL
 	};
 
@@ -46,7 +46,10 @@ image grayscaled_image(image in)
 			for (uint8_t c = 0; c < in.channels; ++c)
 				sum += img_pixel_at(in, x, y, c);
 
-			img_pixel_at(out, x, y, 0) = sum / in.channels;
+			sum = sum / in.channels;
+
+			for (uint8_t c = 0; c < in.channels; ++c)
+				img_pixel_at(out, x, y, c) = sum;
 		}
 	}
 

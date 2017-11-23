@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#define MODEL_NAME "block-model.pb"
+#define MODEL_NAME "type-detect.pb"
 
 static tensorflow_model* model = NULL;
 

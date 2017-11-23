@@ -20,19 +20,14 @@ lego_colour colours[] = {
 	{ 2, "Yellow",{ 255, 255, 0 } }
 };
 
-void init_colour_model()
-{
-	if (!model)
-	{
-		model = model_load(MODEL_NAME);
-	}
-}
-
 lego_colour detect_colour(
 	image source)
 {
 	assert(source.channels * source.width * source.height != 0);
 	assert(source.img != 0);
+
+	if (!model)
+		model = model_load(MODEL_NAME);
 
 	output_class output = model_run(model, source);
 

@@ -9,6 +9,12 @@ project(lego-sorter)
 # Find all dependency packages
 find_package(OpenCV REQUIRED)
 
+if(MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Zi")
+else()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+endif()
+
 # Add all the sub projects to the main project
 add_subdirectory(classifier)
 add_subdirectory(block-in-image)

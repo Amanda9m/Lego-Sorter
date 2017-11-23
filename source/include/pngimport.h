@@ -22,4 +22,9 @@ int debug_export(
 	image img,
 	const char* filename);
 
+image resize_image(
+	image img,
+	uint32_t new_width,
+	uint32_t new_height);
+
 #endif

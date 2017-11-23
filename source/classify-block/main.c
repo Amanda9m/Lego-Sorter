@@ -22,9 +22,10 @@ int main(int argc, char** argv)
 		printf("Error importing image.\n");
 		return 2;
 	}
+	image img2 = resize_image(img, 224, 224);
+	image gray = grayscaled_image(img2);
 
-	image gray = grayscaled_image(img);
-
+	printf("Block In Image\n");
 	if (!block_in_image(gray))
 	{
 		printf("No block found in image!\n");
@@ -32,7 +33,7 @@ int main(int argc, char** argv)
 	}
 
 	block_type type = recognize_block(gray);
-	lego_colour colour = detect_colour(img);
+	lego_colour colour = detect_colour(img2);
 
 	printf("Block Detected!\n"
 		"Type: %"PRIu16"x%"PRIu16"x%"PRIu16"\n"
@@ -43,6 +44,7 @@ int main(int argc, char** argv)
 		colour.colour_name);
 
 	free(img.img);
+	free(img2.img);
 	free(gray.img);
 
 	return 0;

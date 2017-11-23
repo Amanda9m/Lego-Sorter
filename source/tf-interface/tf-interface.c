@@ -7,6 +7,7 @@
 
 #include "tensorflow/c/c_api.h"
 
+// Size of an array
 #define asize(a) (sizeof(a) / sizeof(a[0]))
 
 void free_buffer(void* data, size_t length) {
@@ -19,6 +20,13 @@ void deallocate(void* data, size_t a, void* b)
 
 TF_Buffer* read_file(const char* file) {
 	FILE *f = fopen(file, "rb");
+
+	if (!f)
+	{
+		printf("Failed to load file %s!\n", file);
+		assert(0);
+	}
+
 	fseek(f, 0, SEEK_END);
 	long fsize = ftell(f);
 	fseek(f, 0, SEEK_SET);  //same as rewind(f);                                            
@@ -70,22 +78,37 @@ output_class model_run(
 	tensorflow_model* model,
 	image input)
 {
-	int64_t dims[] = { input.width, input.height, input.channels };
+	printf("%d %d %d\n", (int)input.width, (int)input.height, (int)input.channels);
+
+	assert(input.width == 224 
+		&& input.height == 224);
+
+	printf("Run Model %p\n", model);
+	assert(model);
+
+	int64_t dims[] = { 1, input.width, input.height, input.channels };
 	float* buf = make_float_buffer(input);
 	size_t size = (size_t)input.height * input.width * input.channels;
+
+	printf("Created buffer %p\n", buf);
 
 	TF_Tensor* in = TF_NewTensor(
 		TF_FLOAT,
 		dims,
-		sizeof(dims) / sizeof(int64_t),
+		asize(dims),
 		buf,
 		size * sizeof(float),
 		deallocate,
 		NULL);
+
+	printf("Created tensor %p\n", in);
+
 	TF_Tensor* out;
 	TF_Status* status = TF_NewStatus();
 	TF_Operation* in_op = TF_GraphOperationByName(model->graph, "input");
-	TF_Operation* out_op = TF_GraphOperationByName(model->graph, "final_output");
+	TF_Operation* out_op = TF_GraphOperationByName(model->graph, "final_result");
+
+	printf("Got Operations %p %p %p %p\n", out, status, in_op, out_op);
 
 	TF_Output inputs[] = {
 		{ in_op, 0 }
@@ -116,12 +139,15 @@ output_class model_run(
 		.classId = max_elem(outputdata, bufsize) - outputdata
 	};
 
+	printf("Model Create Ended");
+
 	return outclass;
 }
 
 tensorflow_model* model_load(const char* filename)
 {
 	tensorflow_model* model = malloc(sizeof(tensorflow_model));
+	printf("Created Model %p %s\n", model, filename);
 	assert(model);
 
 
@@ -130,6 +156,8 @@ tensorflow_model* model_load(const char* filename)
 	TF_Buffer* graph_def = read_file(filename);
 	TF_Status* status = TF_NewStatus();
 	TF_ImportGraphDefOptions* opts = TF_NewImportGraphDefOptions();
+
+	printf("%p %p %p\n", graph_def, status, opts);
 
 	TF_GraphImportGraphDef(
 		model->graph, 
@@ -157,6 +185,9 @@ tensorflow_model* model_load(const char* filename)
 	TF_DeleteStatus(status);
 	TF_DeleteBuffer(graph_def);
 	TF_DeleteSessionOptions(sessopts);
+
+	printf("Model Load Ended\n");
+	return model;
 }
 
 void model_free(tensorflow_model* model)

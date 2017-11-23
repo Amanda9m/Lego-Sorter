@@ -81,3 +81,28 @@ extern "C" int debug_export(
 
 	return 0;
 }
+
+extern "C" image resize_image(
+	image img,
+	uint32_t nwidth,
+	uint32_t nheight)
+{
+	int type = CV_MAKETYPE(CV_8U, img.channels);
+	cv::Mat mat = cv::Mat(img.height, img.width, type, img.img);
+	cv::Mat outmat;
+
+	cv::resize(mat, outmat, cv::Size((int)nheight, (int)nwidth));
+
+	image out = {
+		nheight,
+		nwidth,
+		img.channels,
+		(uint8_t*)malloc(sizeof(uint8_t) * nheight *
+			nwidth * img.channels)
+	};
+
+	memcpy(out.img, outmat.data,
+		sizeof(uint8_t) * nheight *	nwidth * img.channels);
+
+	return out;
+}
