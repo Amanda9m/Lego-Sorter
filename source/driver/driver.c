@@ -8,6 +8,7 @@
 #include "image.h"
 #include "pngimport.h"
 #include "set_management.h"
+#include "camera.h"
 
 
 // this is the driver which is to be run over and over again until the list is full or we stop
@@ -17,7 +18,7 @@ void inSet(int v)
 	char command[100];
 	
 	snprintf(command, sizeof(command),
-		"python LED.py %d &", v);
+		"python LED.py %d", v);
 
 	system(command);
 }
@@ -25,12 +26,13 @@ void inSet(int v)
 int main (int argc, char** argv)
 {
 	set myset = set_management();
+	camera* cam = create_camera(224, 224);
 	bool blocks_are_left = true;
 	while(blocks_are_left)
 	{
 		// Should load the given image off of disk
 		image source_img;
-		int err = import_image(argv[1], &source_img);
+		take_picture(cam, &source_img);
 		
 		if(block_in_image(source_img));
 		{
@@ -58,6 +60,8 @@ int main (int argc, char** argv)
 			}
 		}
 	}
+
+	destroy_camera(cam);
 }
 
 
