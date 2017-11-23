@@ -24,7 +24,7 @@ int main (void)
 		if(block_in_image(source_img))
 		{
 			block_type type = recognize_block(gray);
-			lego_colour colour = detect_colour(img); //make this mean colour id as in my look up table or change my lookup table to right ids
+			lego_colour colour = detect_colour(img);
 			for(int i = 0; i < myset.size; i++)
 			{
 				if(myset.array[i].blocks_left > 0)
