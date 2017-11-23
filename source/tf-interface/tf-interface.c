@@ -83,19 +83,19 @@ output_class model_run(
 	tensorflow_model* model,
 	image input)
 {
-	fprintf(stderr, "%d %d %d\n", (int)input.width, (int)input.height, (int)input.channels);
+	//fprintf(stderr, "%d %d %d\n", (int)input.width, (int)input.height, (int)input.channels);
 
 	assert(input.width == 224 
 		&& input.height == 224);
 
-	fprintf(stderr, "Run Model %p\n", model);
+	//fprintf(stderr, "Run Model %p\n", model);
 	assert(model);
 
 	int64_t dims[] = { 1, input.width, input.height, input.channels };
 	float* buf = make_float_buffer(input);
 	size_t size = (size_t)input.height * input.width * input.channels;
 
-	fprintf(stderr, "Created buffer %p\n", buf);
+	//fprintf(stderr, "Created buffer %p\n", buf);
 
 	TF_Tensor* in = TF_NewTensor(
 		TF_FLOAT,
@@ -106,14 +106,14 @@ output_class model_run(
 		deallocate,
 		NULL);
 
-	fprintf(stderr, "Created tensor %p\n", in);
+	//fprintf(stderr, "Created tensor %p\n", in);
 
 	TF_Tensor* out;
 	TF_Status* status = TF_NewStatus();
 	TF_Operation* in_op = TF_GraphOperationByName(model->graph, "input");
 	TF_Operation* out_op = TF_GraphOperationByName(model->graph, "final_result");
 
-	fprintf(stderr, "Got Operations %p %p %p %p\n", out, status, in_op, out_op);
+	//fprintf(stderr, "Got Operations %p %p %p %p\n", out, status, in_op, out_op);
 
 	TF_Output inputs[] = {
 		{ in_op, 0 }
@@ -145,7 +145,7 @@ output_class model_run(
 		*outputdata
 	};
 
-	fprintf(stderr, "Model Run Ended. Index: %d\n", (int)outclass.classId);
+	//fprintf(stderr, "Model Run Ended. Index: %d\n", (int)outclass.classId);
 
 	return outclass;
 }

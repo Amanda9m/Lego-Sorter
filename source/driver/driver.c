@@ -61,9 +61,14 @@ int main (int argc, char** argv)
 						// wait 3 seconds???
 						myset.array[i].blocks_left --;
 						i = myset.size;
+						printf("Block in set!\n");
 					}
 				}
 			}
+
+			printf("Block Type: %dx%dx%dx\nBlock Colour: %s\n",
+				type.width, type.length, type.thickness,
+				colour.colour_name);
 		}
 
 		free(img2.img);
