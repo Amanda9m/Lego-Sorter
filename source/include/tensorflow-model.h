@@ -6,7 +6,7 @@ typedef struct tensorflow_model tensorflow_model;
 typedef struct output_class
 {
 	uint32_t classId;
-	double probability;
+	double _unused;
 } output_class;
 
 tensorflow_model* model_load(

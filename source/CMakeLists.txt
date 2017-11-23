@@ -14,6 +14,7 @@ add_subdirectory(classifier)
 add_subdirectory(block-in-image)
 add_subdirectory(classify-block)
 add_subdirectory(camera)
+add_subdirectory(tf-interface)
 
 # Add the headers so that they can be edited more easily
 add_subdirectory(include)
