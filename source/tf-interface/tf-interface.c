@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include <tensorflow\c\c_api.h>
+#include "tensorflow/c/c_api.h"
 
 #define asize(a) (sizeof(a) / sizeof(a[0]))
 
@@ -93,13 +93,14 @@ output_class model_run(
 	TF_Output outputs[] = {
 		{ out_op, 0 }
 	};
+	const TF_Operation* const_out_op = out_op;
 	
 	TF_SessionRun(
 		model->session,
 		NULL,
 		inputs, &in, 1,
 		outputs, &out, 1,
-		&out_op, 1,
+		&const_out_op, 1,
 		NULL, status);
 
 	if (TF_GetCode(status) != TF_OK)
