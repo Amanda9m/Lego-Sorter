@@ -1,9 +1,13 @@
-4
-4, 4, 1, 1, 3
-6, 1, 3, 2, 2
+9
+4, 4, 1, 1, 1
+4, 1, 3, 1, 1
+4, 2, 3, 2, 2
+4, 2, 3, 4, 3
+4, 2, 3, 1, 2
+4, 2, 3, 6, 1
+4, 2, 3, 5, 1
+4, 2, 3, 3, 1
 2, 2, 3, 7, 1
-4, 2, 3, 4, 2
-
 
 // Input blocks to find in a list length, width, thickness, color, number of blocks of that type
 // Thin blocks have a thickness 1, thick blocks have a thickness 3
