@@ -34,7 +34,7 @@ int main (int argc, char** argv)
 		// Should load the given image off of disk
 		image source_img;
 		take_picture(cam, &source_img);
-		printf("took picture\n");
+		//printf("took picture\n");
 
 		if (source_img.height == 0 || source_img.width == 0)
 			continue;
@@ -57,7 +57,7 @@ int main (int argc, char** argv)
 						&& myset.array[i].thickness == type.thickness
 						&& myset.array[i].colour == colour.lego_id)
 					{
-						inSet(1);//turn green light on
+						inSet(1);//turn blue light on
 						// wait 3 seconds???
 						myset.array[i].blocks_left --;
 						i = myset.size;
