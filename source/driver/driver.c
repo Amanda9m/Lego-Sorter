@@ -66,7 +66,7 @@ int main (int argc, char** argv)
 				}
 			}
 
-			printf("Block Type: %dx%dx%dx\nBlock Colour: %s\n",
+			printf("Block Type: %dx%dx%d\nBlock Colour: %s\n",
 				type.width, type.length, type.thickness,
 				colour.colour_name);
 		}
