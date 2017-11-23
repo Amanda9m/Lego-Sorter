@@ -35,19 +35,17 @@ int main (int argc, char** argv)
 		image source_img;
 		take_picture(cam, &source_img);
 		printf("took picture\n");
+
+		if (source_img.height == 0 || source_img.width == 0)
+			continue;
+
+        image img2 = resize_image(source_img, 224, 224);
+        image gray = grayscaled_image(img2);
 		
-		if(source_img.height != 0 
-			&& source_img.width != 0
-			&& source_img.channels != 0
-			&& source_img.img != NULL
-			&& block_in_image(source_img));
+		if(block_in_image(img2));
 		{
 			fprintf(stderr, "Found Block\n");
-            image img2 = resize_image(source_img, 224, 224);
-            image gray = grayscaled_image(img2);
             
-			block_type type = recognize_block(gray);
-			lego_colour colour = detect_colour(img2);
 			for(int i = 0; i < myset.size; i++)
 			{
 				if(myset.array[i].blocks_left > 0)
@@ -66,6 +64,8 @@ int main (int argc, char** argv)
 			}
 		}
 
+		free(img2.img);
+		free(gray.img);
 		free(source_img.img);
 		source_img.height = 0;
 		source_img.img = NULL;
