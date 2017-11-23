@@ -11,13 +11,13 @@ static tensorflow_model* model = NULL;
 #define MODEL_NAME "colour-detect.pb"
 
 lego_colour colours[] = {
-	{ 0, "Black", { 0, 0, 0 } },
-	{ 0, "Blue",  { 0, 0, 255 } },
-	{ 0, "Green", { 0, 255, 0 } },
-	{ 0, "Gray",  { 128, 128, 128 } },
-	{ 0, "Red",   { 255, 0, 0 } },
-	{ 0, "White", { 255, 255, 255 } },
-	{ 0, "Yellow",{ 255, 255, 0 } }
+	{ 7, "Black", { 0, 0, 0 } },
+	{ 4, "Blue",  { 0, 0, 255 } },
+	{ 3, "Green", { 0, 255, 0 } },
+	{ 6, "Gray",  { 128, 128, 128 } },
+	{ 1, "Red",   { 255, 0, 0 } },
+	{ 5, "White", { 255, 255, 255 } },
+	{ 2, "Yellow",{ 255, 255, 0 } }
 };
 
 void init_colour_model()
