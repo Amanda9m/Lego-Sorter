@@ -153,7 +153,7 @@ output_class model_run(
 tensorflow_model* model_load(const char* filename)
 {
 	tensorflow_model* model = malloc(sizeof(tensorflow_model));
-	fprintf(stderr, "Created Model %p %s\n", model, filename);
+	//fprintf(stderr, "Created Model %p %s\n", model, filename);
 	assert(model);
 
 
@@ -163,7 +163,7 @@ tensorflow_model* model_load(const char* filename)
 	TF_Status* status = TF_NewStatus();
 	TF_ImportGraphDefOptions* opts = TF_NewImportGraphDefOptions();
 
-	fprintf(stderr, "%p %p %p\n", graph_def, status, opts);
+	//fprintf(stderr, "%p %p %p\n", graph_def, status, opts);
 
 	TF_GraphImportGraphDef(
 		model->graph, 
@@ -192,7 +192,7 @@ tensorflow_model* model_load(const char* filename)
 	TF_DeleteBuffer(graph_def);
 	TF_DeleteSessionOptions(sessopts);
 
-	fprintf(stderr, "Model Load Ended\n");
+	//fprintf(stderr, "Model Load Ended\n");
 	return model;
 }
 
