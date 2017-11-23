@@ -22,7 +22,7 @@ void inSet(int v)
 	system(command);
 }
 
-int main (void)
+int main (int argc, char** argv)
 {
 	set myset = set_management();
 	bool blocks_are_left = true;
@@ -34,8 +34,11 @@ int main (void)
 		
 		if(block_in_image(source_img));
 		{
+            image img2 = resize_image(source_img, 224, 224);
+            image gray = grayscaled_image(img2);
+            
 			block_type type = recognize_block(gray);
-			lego_colour colour = detect_colour(img);
+			lego_colour colour = detect_colour(img2);
 			for(int i = 0; i < myset.size; i++)
 			{
 				if(myset.array[i].blocks_left > 0)
