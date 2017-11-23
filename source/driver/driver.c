@@ -22,7 +22,7 @@ void inSet(int v)
 	system(command);
 }
 
-int main (void)
+int main (int argc, char** argv)
 {
 	set myset = set_management();
 	bool blocks_are_left = true;
