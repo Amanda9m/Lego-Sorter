@@ -34,7 +34,7 @@ int main (int argc, char** argv)
 		// Should load the given image off of disk
 		image source_img;
 		take_picture(cam, &source_img);
-		printf("took picture\n");
+		//printf("took picture\n");
 
 		if (source_img.height == 0 || source_img.width == 0)
 			continue;
