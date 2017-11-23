@@ -16,7 +16,7 @@ static tensorflow_model* model = NULL;
 // Method stub for block_in_image
 bool block_in_image(image source)
 {
-	printf("Block in Image\n");
+	fprintf(stderr, "Block in Image\n");
 	/* It doesn't really make sense to check if there is a block in an empty image.
 	   Just returning false is an option, but for now this method will just
 	     assert to ensure that the image isn't empty.

@@ -23,7 +23,7 @@ TF_Buffer* read_file(const char* file) {
 
 	if (!f)
 	{
-		printf("Failed to load file %s!\n", file);
+		fprintf(stderr, "Failed to load file %s!\n", file);
 		assert(0);
 	}
 
@@ -61,7 +61,7 @@ float* max_elem(float* begin, size_t size)
 
 	for (size_t i = 0; i < size; ++i)
 	{
-		printf("%f\n", (double)begin[i]);
+		//fprintf(stderr, "%f\n", (double)begin[i]);
 	}
 
 	float* max = begin;
@@ -83,19 +83,19 @@ output_class model_run(
 	tensorflow_model* model,
 	image input)
 {
-	printf("%d %d %d\n", (int)input.width, (int)input.height, (int)input.channels);
+	fprintf(stderr, "%d %d %d\n", (int)input.width, (int)input.height, (int)input.channels);
 
 	assert(input.width == 224 
 		&& input.height == 224);
 
-	printf("Run Model %p\n", model);
+	fprintf(stderr, "Run Model %p\n", model);
 	assert(model);
 
 	int64_t dims[] = { 1, input.width, input.height, input.channels };
 	float* buf = make_float_buffer(input);
 	size_t size = (size_t)input.height * input.width * input.channels;
 
-	printf("Created buffer %p\n", buf);
+	fprintf(stderr, "Created buffer %p\n", buf);
 
 	TF_Tensor* in = TF_NewTensor(
 		TF_FLOAT,
@@ -106,14 +106,14 @@ output_class model_run(
 		deallocate,
 		NULL);
 
-	printf("Created tensor %p\n", in);
+	fprintf(stderr, "Created tensor %p\n", in);
 
 	TF_Tensor* out;
 	TF_Status* status = TF_NewStatus();
 	TF_Operation* in_op = TF_GraphOperationByName(model->graph, "input");
 	TF_Operation* out_op = TF_GraphOperationByName(model->graph, "final_result");
 
-	printf("Got Operations %p %p %p %p\n", out, status, in_op, out_op);
+	fprintf(stderr, "Got Operations %p %p %p %p\n", out, status, in_op, out_op);
 
 	TF_Output inputs[] = {
 		{ in_op, 0 }
@@ -133,7 +133,7 @@ output_class model_run(
 
 	if (TF_GetCode(status) != TF_OK)
 	{
-		printf("ERROR: Unable to run graph %s", TF_Message(status));
+		fprintf(stderr, "ERROR: Unable to run graph %s", TF_Message(status));
 		exit(-1);
 	}
 
@@ -145,7 +145,7 @@ output_class model_run(
 		*outputdata
 	};
 
-	printf("Model Run Ended. Index: %d\n", (int)outclass.classId);
+	fprintf(stderr, "Model Run Ended. Index: %d\n", (int)outclass.classId);
 
 	return outclass;
 }
@@ -153,7 +153,7 @@ output_class model_run(
 tensorflow_model* model_load(const char* filename)
 {
 	tensorflow_model* model = malloc(sizeof(tensorflow_model));
-	printf("Created Model %p %s\n", model, filename);
+	fprintf(stderr, "Created Model %p %s\n", model, filename);
 	assert(model);
 
 
@@ -163,7 +163,7 @@ tensorflow_model* model_load(const char* filename)
 	TF_Status* status = TF_NewStatus();
 	TF_ImportGraphDefOptions* opts = TF_NewImportGraphDefOptions();
 
-	printf("%p %p %p\n", graph_def, status, opts);
+	fprintf(stderr, "%p %p %p\n", graph_def, status, opts);
 
 	TF_GraphImportGraphDef(
 		model->graph, 
@@ -175,7 +175,7 @@ tensorflow_model* model_load(const char* filename)
 
 	if (TF_GetCode(status) != TF_OK)
 	{
-		printf("ERROR: Unable to import graph %s", TF_Message(status));
+		fprintf(stderr, "ERROR: Unable to import graph %s", TF_Message(status));
 		exit(-1);
 	}
 
@@ -184,7 +184,7 @@ tensorflow_model* model_load(const char* filename)
 
 	if (TF_GetCode(status) != TF_OK)
 	{
-		printf("ERROR: Unable to import graph %s", TF_Message(status));
+		fprintf(stderr, "ERROR: Unable to import graph %s", TF_Message(status));
 		exit(-1);
 	}
 
@@ -192,7 +192,7 @@ tensorflow_model* model_load(const char* filename)
 	TF_DeleteBuffer(graph_def);
 	TF_DeleteSessionOptions(sessopts);
 
-	printf("Model Load Ended\n");
+	fprintf(stderr, "Model Load Ended\n");
 	return model;
 }
 

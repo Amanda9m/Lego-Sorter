@@ -1,5 +1,6 @@
 #include "block_detector.h"
 #include "colour_detector.h"
+#include "block_recognizer.h"
 #include "pngimport.h"
 
 #include <assert.h>
@@ -53,8 +54,8 @@ int main(int argc, char** argv)
 		printf("An error occurred while reaing '%s'", argv[1]);
 		return 2;
 	}
-	image img2 = resize_image(img, 244, 244);
-	greyscale = make_grayscale(img2);
+	image img2 = resize_image(img, 224, 224);
+	greyscale = grayscaled_image(img2);
 
 	// Use block_in_image to determine whether there is a block in the image.
 	// Mask is unused because we will do nothing else other than use result.
@@ -62,10 +63,16 @@ int main(int argc, char** argv)
 
 	if (is_brick)
 	{
-		printf("1\n");
+		//printf("1\n");
 
-		//lego_colour colour = detect_colour(img);
-		//printf("Brick Colour: %s\n", colour.colour_name);
+		//lego_colour colour = detect_colour(img2);
+		//printf("%s\n", colour.colour_name);
+
+		block_type type = recognize_block(greyscale);
+		printf("%dx%dx%d\n",
+			(int)type.width,
+			(int)type.length,
+			(int)type.thickness);
 	}
 	else
 	{
