@@ -36,7 +36,9 @@ int main (int argc, char** argv)
 		take_picture(cam, &source_img);
 		printf("took picture");
 		
-		if(block_in_image(source_img));
+		if(source_img.height != 0 
+			&& source_img.width != 0
+			&& block_in_image(source_img));
 		{
 			fprintf(stderr, "Found Block\n");
             image img2 = resize_image(source_img, 224, 224);
