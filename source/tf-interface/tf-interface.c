@@ -59,11 +59,16 @@ float* max_elem(float* begin, size_t size)
 {
 	assert(size != 0);
 
+	for (size_t i = 0; i < size; ++i)
+	{
+		printf("%f\n", (double)begin[i]);
+	}
+
 	float* max = begin;
 	float* end = begin + size;
 	for (float* it = begin; it != end; ++it)
-		if (*begin > *max)
-			max = begin;
+		if (*it > *max)
+			max = it;
 
 	return max;
 }
@@ -136,10 +141,11 @@ output_class model_run(
 	float* outputdata = (float*)TF_TensorData(out);
 
 	output_class outclass = {
-		.classId = max_elem(outputdata, bufsize) - outputdata
+		.classId = max_elem(outputdata, bufsize) - outputdata,
+		*outputdata
 	};
 
-	printf("Model Create Ended");
+	printf("Model Run Ended. Index: %d\n", (int)outclass.classId);
 
 	return outclass;
 }

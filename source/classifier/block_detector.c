@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 #define MODEL_NAME "block-detect.pb"
-#define BLOCK_ID 0
+#define BLOCK_ID 1
 
 static tensorflow_model* model = NULL;
 
