@@ -22,6 +22,7 @@ add_subdirectory(classify-block)
 add_subdirectory(camera)
 add_subdirectory(tf-interface)
 add_subdirectory(set_management)
+add_subdirectory(driver)
 
 # Add the headers so that they can be edited more easily
 add_subdirectory(include)

@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "block_detector.h"
 #include "block_recognizer.h"
@@ -7,7 +9,18 @@
 #include "pngimport.h"
 #include "set_management.h"
 
+
 // this is the driver which is to be run over and over again until the list is full or we stop
+
+void inSet(int v)
+{
+	char command[100];
+	
+	snprintf(command, sizeof(command),
+		"python LED.py %d &", v);
+
+	system(command);
+}
 
 int main (void)
 {
@@ -19,7 +32,7 @@ int main (void)
 		image source_img;
 		int err = import_image(argv[1], &source_img);
 		
-		if(block_in_image(source_img))
+		if(block_in_image(source_img));
 		{
 			block_type type = recognize_block(gray);
 			lego_colour colour = detect_colour(img);
@@ -27,10 +40,12 @@ int main (void)
 			{
 				if(myset.array[i].blocks_left > 0)
 				{
-					if(myset.array[i].length == type.length && myset.array[i].width == type.width
-						&& myset.array[i].thickness == type.thickness && myset.array[i].colour == colour.lego_id)
+					if(myset.array[i].length == type.length
+						&& myset.array[i].width == type.width
+						&& myset.array[i].thickness == type.thickness
+						&& myset.array[i].colour == colour.lego_id)
 					{
-						inSet(1)//turn green light on
+						inSet(1);//turn green light on
 						// wait 3 seconds???
 						myset.array[i].blocks_left --;
 						i = n;
