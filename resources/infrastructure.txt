@@ -1,5 +1,0 @@
-Required Infrastructure
-    - Tensorflow for the PI
-    - C toolchain for the PI
-    - PI Camera interface
-    - Build System
