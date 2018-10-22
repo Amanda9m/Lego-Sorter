@@ -1,15 +1,6 @@
 # Overview
 
-This repo contains code for the
-["TensorFlow for poets 2" codelab](https://codelabs.developers.google.com/codelabs/tensorflow-for-poets-2).
-
-This repo contains a simplified and trimmed down version of tensorflow's
-[android image classification example](https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/android)
-in the `android/` directory.
-
-The `scripts` directory contains helpers for the codelab.
-
-This has been edited to work for lego blocks. The actual training occurs under the tf_files subheader, and all pictures are sorted into the Lego_block_pictures folder. To run the currently trained module, use command
+This directory includes the InceptionV3 Tensorflow model, retrained to predict the colours of lego blocks.  The actual training occurs under the tf_files subheader, and all pictures are sorted into the Lego_block_pictures folder. To run the currently trained module, use command:
 
 python3 -m scripts.label_image \
 --graph=tf_files/retrained_graph.pb  \
@@ -32,4 +23,4 @@ python3 -m scripts.retrain \
 --architecture="${ARCHITECTURE}" \
 --image_dir=tf_files/Lego_block_pictures_color
 
-All commands and knowledge comes from this module: https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/#3
+This code is based upon the module at: https://codelabs.developers.google.com/codelabs/tensorflow-for-poets/#3
